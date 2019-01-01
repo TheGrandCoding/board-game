@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour {
 
@@ -52,6 +53,8 @@ public class PlayerManager : MonoBehaviour {
                 var nPl = new Player(keypair.Value);
                 Players.Add(nPl);
             }
+            SceneManager.LoadScene("Main");
+            SceneManager.UnloadSceneAsync("Start"); // i'm aware this gives a warning
         }
     }
 

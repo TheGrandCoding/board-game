@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
         SetInternalMovement();
         SetExternalMovement();
         CreateDangerCards();
-        CreatePlayers("Bob", "Dave");
+        CheckPlayers();
     }
     private static void CreateContinents()
     {
@@ -241,15 +241,13 @@ public class GameManager : MonoBehaviour {
         RemainingCards = dangerCards;
     }
 
-    private static void CreatePlayers(string p1, string p2)
+    private static void CheckPlayers()
     {
-        var player1 = new Player(p1);
-        var player2 = new Player(p2);
-
-        Players = new List<Player>()
+        Players = PlayerManager.Players;
+        foreach(var p in Players)
         {
-            player1, player2
-        };
+            Debug.Log(p.Name);
+        }
     }
 
     public static bool CanMove(Territory t1, Territory t2)
