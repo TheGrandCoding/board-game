@@ -20,7 +20,7 @@ public class TerritoryButton : ImageButton {
 
     public override void Clicked()
     {
-        Debug.Log("Clicked on " + Continent.Name + " " + Territory.Name);
+        //Debug.Log("Clicked on " + Continent.Name + " " + Territory.Name);
     }
 
     public override void Startup()
