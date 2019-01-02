@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 38703388}
   - component: {fileID: 38703390}
   - component: {fileID: 38703389}
+  - component: {fileID: 38703391}
   m_Layer: 5
   m_Name: Madagascar
   m_TagString: Untagged
@@ -186,6 +187,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38703387}
   m_CullTransparentMesh: 0
+--- !u!114 &38703391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38703387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Madagascar
+  ContinentName: Africa
+  InternalID: 0
 --- !u!1 &226698903
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,6 +213,7 @@ GameObject:
   - component: {fileID: 226698904}
   - component: {fileID: 226698906}
   - component: {fileID: 226698905}
+  - component: {fileID: 226698907}
   m_Layer: 5
   m_Name: WestAustralia
   m_TagString: Untagged
@@ -260,6 +277,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 226698903}
   m_CullTransparentMesh: 0
+--- !u!114 &226698907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226698903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Western Australia
+  ContinentName: Australia
+  InternalID: 0
 --- !u!1 &240426245
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +303,7 @@ GameObject:
   - component: {fileID: 240426246}
   - component: {fileID: 240426248}
   - component: {fileID: 240426247}
+  - component: {fileID: 240426249}
   m_Layer: 5
   m_Name: Peru
   m_TagString: Untagged
@@ -334,6 +367,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 240426245}
   m_CullTransparentMesh: 0
+--- !u!114 &240426249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240426245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Peru
+  ContinentName: South America
+  InternalID: 0
 --- !u!1 &270680274
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,6 +434,7 @@ GameObject:
   - component: {fileID: 293355103}
   - component: {fileID: 293355105}
   - component: {fileID: 293355104}
+  - component: {fileID: 293355106}
   m_Layer: 5
   m_Name: MiddleEast
   m_TagString: Untagged
@@ -449,6 +498,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293355102}
   m_CullTransparentMesh: 0
+--- !u!114 &293355106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293355102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Middle East
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &302144137
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,6 +623,7 @@ GameObject:
   - component: {fileID: 339384980}
   - component: {fileID: 339384982}
   - component: {fileID: 339384981}
+  - component: {fileID: 339384983}
   m_Layer: 5
   m_Name: Greenland
   m_TagString: Untagged
@@ -622,6 +687,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339384979}
   m_CullTransparentMesh: 0
+--- !u!114 &339384983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339384979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Greenland
+  ContinentName: North America
+  InternalID: 0
 --- !u!1 &386076212
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,6 +845,7 @@ GameObject:
   - component: {fileID: 494963727}
   - component: {fileID: 494963729}
   - component: {fileID: 494963728}
+  - component: {fileID: 494963730}
   m_Layer: 5
   m_Name: NewZealand
   m_TagString: Untagged
@@ -828,6 +909,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 494963726}
   m_CullTransparentMesh: 0
+--- !u!114 &494963730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494963726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: New Zealand
+  ContinentName: Australia
+  InternalID: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,6 +1017,7 @@ GameObject:
   - component: {fileID: 528053368}
   - component: {fileID: 528053370}
   - component: {fileID: 528053369}
+  - component: {fileID: 528053371}
   m_Layer: 5
   m_Name: Brazil
   m_TagString: Untagged
@@ -984,6 +1081,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 528053367}
   m_CullTransparentMesh: 0
+--- !u!114 &528053371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528053367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Brazil
+  ContinentName: South America
+  InternalID: 0
 --- !u!1 &546849377
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,6 +1107,7 @@ GameObject:
   - component: {fileID: 546849378}
   - component: {fileID: 546849380}
   - component: {fileID: 546849379}
+  - component: {fileID: 546849381}
   m_Layer: 5
   m_Name: Congo
   m_TagString: Untagged
@@ -1058,6 +1171,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 546849377}
   m_CullTransparentMesh: 0
+--- !u!114 &546849381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546849377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Congo
+  ContinentName: Africa
+  InternalID: 0
 --- !u!1 &608214800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,8 +1197,9 @@ GameObject:
   - component: {fileID: 608214801}
   - component: {fileID: 608214803}
   - component: {fileID: 608214802}
+  - component: {fileID: 608214804}
   m_Layer: 5
-  m_Name: UK
+  m_Name: Great Britain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1132,6 +1261,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 608214800}
   m_CullTransparentMesh: 0
+--- !u!114 &608214804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608214800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Great Britain
+  ContinentName: Europe
+  InternalID: 0
 --- !u!1 &610403133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,6 +1287,7 @@ GameObject:
   - component: {fileID: 610403134}
   - component: {fileID: 610403136}
   - component: {fileID: 610403135}
+  - component: {fileID: 610403137}
   m_Layer: 5
   m_Name: Indonesia
   m_TagString: Untagged
@@ -1206,6 +1351,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610403133}
   m_CullTransparentMesh: 0
+--- !u!114 &610403137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610403133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Indonesia
+  ContinentName: Australia
+  InternalID: 0
 --- !u!1 &693891105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,6 +1377,7 @@ GameObject:
   - component: {fileID: 693891106}
   - component: {fileID: 693891108}
   - component: {fileID: 693891107}
+  - component: {fileID: 693891109}
   m_Layer: 5
   m_Name: EastAustralia
   m_TagString: Untagged
@@ -1280,6 +1441,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 693891105}
   m_CullTransparentMesh: 0
+--- !u!114 &693891109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693891105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Eastern Australia
+  ContinentName: Australia
+  InternalID: 0
 --- !u!1 &709796357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,6 +1509,7 @@ GameObject:
   - component: {fileID: 910976985}
   - component: {fileID: 910976987}
   - component: {fileID: 910976986}
+  - component: {fileID: 910976988}
   m_Layer: 5
   m_Name: SouthAfrica
   m_TagString: Untagged
@@ -1396,6 +1573,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 910976984}
   m_CullTransparentMesh: 0
+--- !u!114 &910976988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910976984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: South Africa
+  ContinentName: Africa
+  InternalID: 0
 --- !u!1 &958601013
 GameObject:
   m_ObjectHideFlags: 0
@@ -1407,6 +1599,7 @@ GameObject:
   - component: {fileID: 958601014}
   - component: {fileID: 958601016}
   - component: {fileID: 958601015}
+  - component: {fileID: 958601017}
   m_Layer: 5
   m_Name: Egypt
   m_TagString: Untagged
@@ -1470,6 +1663,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958601013}
   m_CullTransparentMesh: 0
+--- !u!114 &958601017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958601013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Egypt
+  ContinentName: Africa
+  InternalID: 0
 --- !u!1 &974797247
 GameObject:
   m_ObjectHideFlags: 0
@@ -1481,6 +1689,7 @@ GameObject:
   - component: {fileID: 974797248}
   - component: {fileID: 974797250}
   - component: {fileID: 974797249}
+  - component: {fileID: 974797251}
   m_Layer: 5
   m_Name: Siam
   m_TagString: Untagged
@@ -1544,6 +1753,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 974797247}
   m_CullTransparentMesh: 0
+--- !u!114 &974797251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974797247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Siam
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &979227349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,6 +1884,7 @@ GameObject:
   - component: {fileID: 1017696630}
   - component: {fileID: 1017696632}
   - component: {fileID: 1017696631}
+  - component: {fileID: 1017696633}
   m_Layer: 5
   m_Name: Alberta
   m_TagString: Untagged
@@ -1723,6 +1948,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1017696629}
   m_CullTransparentMesh: 0
+--- !u!114 &1017696633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017696629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Alberta
+  ContinentName: North America
+  InternalID: 0
 --- !u!1 &1053406549
 GameObject:
   m_ObjectHideFlags: 0
@@ -1734,6 +1974,7 @@ GameObject:
   - component: {fileID: 1053406550}
   - component: {fileID: 1053406552}
   - component: {fileID: 1053406551}
+  - component: {fileID: 1053406553}
   m_Layer: 5
   m_Name: Yakutsk
   m_TagString: Untagged
@@ -1797,6 +2038,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053406549}
   m_CullTransparentMesh: 0
+--- !u!114 &1053406553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053406549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Yakutsk
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1080789221
 GameObject:
   m_ObjectHideFlags: 0
@@ -1898,6 +2154,7 @@ GameObject:
   - component: {fileID: 1118974399}
   - component: {fileID: 1118974401}
   - component: {fileID: 1118974400}
+  - component: {fileID: 1118974402}
   m_Layer: 5
   m_Name: China
   m_TagString: Untagged
@@ -1961,6 +2218,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1118974398}
   m_CullTransparentMesh: 0
+--- !u!114 &1118974402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118974398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: China
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1201831727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1972,6 +2244,7 @@ GameObject:
   - component: {fileID: 1201831728}
   - component: {fileID: 1201831730}
   - component: {fileID: 1201831729}
+  - component: {fileID: 1201831731}
   m_Layer: 5
   m_Name: Scandinavia
   m_TagString: Untagged
@@ -2035,6 +2308,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201831727}
   m_CullTransparentMesh: 0
+--- !u!114 &1201831731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201831727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Scandinavia
+  ContinentName: Europe
+  InternalID: 0
 --- !u!1 &1251645135
 GameObject:
   m_ObjectHideFlags: 0
@@ -2046,6 +2334,7 @@ GameObject:
   - component: {fileID: 1251645136}
   - component: {fileID: 1251645138}
   - component: {fileID: 1251645137}
+  - component: {fileID: 1251645139}
   m_Layer: 5
   m_Name: Mongolia
   m_TagString: Untagged
@@ -2109,6 +2398,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1251645135}
   m_CullTransparentMesh: 0
+--- !u!114 &1251645139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251645135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Mongolia
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1259200695
 GameObject:
   m_ObjectHideFlags: 0
@@ -2120,6 +2424,7 @@ GameObject:
   - component: {fileID: 1259200696}
   - component: {fileID: 1259200698}
   - component: {fileID: 1259200697}
+  - component: {fileID: 1259200699}
   m_Layer: 5
   m_Name: NewGuinea
   m_TagString: Untagged
@@ -2183,6 +2488,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259200695}
   m_CullTransparentMesh: 0
+--- !u!114 &1259200699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259200695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: New Guinea
+  ContinentName: Australia
+  InternalID: 0
 --- !u!1 &1259572088
 GameObject:
   m_ObjectHideFlags: 0
@@ -2194,6 +2514,7 @@ GameObject:
   - component: {fileID: 1259572089}
   - component: {fileID: 1259572091}
   - component: {fileID: 1259572090}
+  - component: {fileID: 1259572092}
   m_Layer: 5
   m_Name: WestAfrica
   m_TagString: Untagged
@@ -2257,6 +2578,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259572088}
   m_CullTransparentMesh: 0
+--- !u!114 &1259572092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259572088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: West Africa
+  ContinentName: Africa
+  InternalID: 0
 --- !u!1 &1320918834
 GameObject:
   m_ObjectHideFlags: 0
@@ -2268,6 +2604,7 @@ GameObject:
   - component: {fileID: 1320918835}
   - component: {fileID: 1320918837}
   - component: {fileID: 1320918836}
+  - component: {fileID: 1320918838}
   m_Layer: 5
   m_Name: NorthernEurope
   m_TagString: Untagged
@@ -2331,6 +2668,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1320918834}
   m_CullTransparentMesh: 0
+--- !u!114 &1320918838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320918834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Northern Europe
+  ContinentName: Europe
+  InternalID: 0
 --- !u!1 &1320978877
 GameObject:
   m_ObjectHideFlags: 0
@@ -2342,6 +2694,7 @@ GameObject:
   - component: {fileID: 1320978878}
   - component: {fileID: 1320978880}
   - component: {fileID: 1320978879}
+  - component: {fileID: 1320978881}
   m_Layer: 5
   m_Name: WesternUS
   m_TagString: Untagged
@@ -2405,6 +2758,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1320978877}
   m_CullTransparentMesh: 0
+--- !u!114 &1320978881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320978877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Western US
+  ContinentName: North America
+  InternalID: 0
 --- !u!1 &1349278354
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,6 +2827,7 @@ GameObject:
   - component: {fileID: 1368734575}
   - component: {fileID: 1368734577}
   - component: {fileID: 1368734576}
+  - component: {fileID: 1368734578}
   m_Layer: 5
   m_Name: Afghanistan
   m_TagString: Untagged
@@ -2522,6 +2891,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368734574}
   m_CullTransparentMesh: 0
+--- !u!114 &1368734578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368734574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Afganistan
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1394190578
 GameObject:
   m_ObjectHideFlags: 0
@@ -2533,6 +2917,7 @@ GameObject:
   - component: {fileID: 1394190579}
   - component: {fileID: 1394190581}
   - component: {fileID: 1394190580}
+  - component: {fileID: 1394190582}
   m_Layer: 5
   m_Name: Venezuela
   m_TagString: Untagged
@@ -2596,6 +2981,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394190578}
   m_CullTransparentMesh: 0
+--- !u!114 &1394190582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394190578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Venezuela
+  ContinentName: South America
+  InternalID: 0
 --- !u!1 &1394866695
 GameObject:
   m_ObjectHideFlags: 0
@@ -2607,6 +3007,7 @@ GameObject:
   - component: {fileID: 1394866696}
   - component: {fileID: 1394866698}
   - component: {fileID: 1394866697}
+  - component: {fileID: 1394866699}
   m_Layer: 5
   m_Name: Quebec
   m_TagString: Untagged
@@ -2670,6 +3071,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394866695}
   m_CullTransparentMesh: 0
+--- !u!114 &1394866699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394866695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Quebec
+  ContinentName: North America
+  InternalID: 0
 --- !u!1 &1578240649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2681,6 +3097,7 @@ GameObject:
   - component: {fileID: 1578240650}
   - component: {fileID: 1578240652}
   - component: {fileID: 1578240651}
+  - component: {fileID: 1578240653}
   m_Layer: 5
   m_Name: SouthernEurope
   m_TagString: Untagged
@@ -2744,6 +3161,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1578240649}
   m_CullTransparentMesh: 0
+--- !u!114 &1578240653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578240649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Southern Europe
+  ContinentName: Europe
+  InternalID: 0
 --- !u!1 &1618043476
 GameObject:
   m_ObjectHideFlags: 0
@@ -2755,6 +3187,7 @@ GameObject:
   - component: {fileID: 1618043477}
   - component: {fileID: 1618043479}
   - component: {fileID: 1618043478}
+  - component: {fileID: 1618043480}
   m_Layer: 5
   m_Name: Iceland
   m_TagString: Untagged
@@ -2818,6 +3251,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618043476}
   m_CullTransparentMesh: 0
+--- !u!114 &1618043480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618043476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Iceland
+  ContinentName: Europe
+  InternalID: 0
 --- !u!1 &1618759410
 GameObject:
   m_ObjectHideFlags: 0
@@ -2829,6 +3277,7 @@ GameObject:
   - component: {fileID: 1618759411}
   - component: {fileID: 1618759413}
   - component: {fileID: 1618759412}
+  - component: {fileID: 1618759414}
   m_Layer: 5
   m_Name: Argentina
   m_TagString: Untagged
@@ -2892,6 +3341,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618759410}
   m_CullTransparentMesh: 0
+--- !u!114 &1618759414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618759410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Argentina
+  ContinentName: South America
+  InternalID: 0
 --- !u!1 &1642138440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2903,6 +3367,7 @@ GameObject:
   - component: {fileID: 1642138441}
   - component: {fileID: 1642138443}
   - component: {fileID: 1642138442}
+  - component: {fileID: 1642138444}
   m_Layer: 5
   m_Name: Siberia
   m_TagString: Untagged
@@ -2966,6 +3431,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642138440}
   m_CullTransparentMesh: 0
+--- !u!114 &1642138444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642138440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Siberia
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1678619880
 GameObject:
   m_ObjectHideFlags: 0
@@ -2977,6 +3457,7 @@ GameObject:
   - component: {fileID: 1678619881}
   - component: {fileID: 1678619883}
   - component: {fileID: 1678619882}
+  - component: {fileID: 1678619884}
   m_Layer: 5
   m_Name: Japan
   m_TagString: Untagged
@@ -3040,6 +3521,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678619880}
   m_CullTransparentMesh: 0
+--- !u!114 &1678619884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678619880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Japan
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1758200057
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,6 +3547,7 @@ GameObject:
   - component: {fileID: 1758200058}
   - component: {fileID: 1758200060}
   - component: {fileID: 1758200059}
+  - component: {fileID: 1758200061}
   m_Layer: 5
   m_Name: WesternEurope
   m_TagString: Untagged
@@ -3114,6 +3611,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758200057}
   m_CullTransparentMesh: 0
+--- !u!114 &1758200061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758200057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Western Europe
+  ContinentName: Europe
+  InternalID: 0
 --- !u!1 &1787296174
 GameObject:
   m_ObjectHideFlags: 0
@@ -3125,6 +3637,7 @@ GameObject:
   - component: {fileID: 1787296175}
   - component: {fileID: 1787296177}
   - component: {fileID: 1787296176}
+  - component: {fileID: 1787296178}
   m_Layer: 5
   m_Name: CentralAmerica
   m_TagString: Untagged
@@ -3188,6 +3701,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1787296174}
   m_CullTransparentMesh: 0
+--- !u!114 &1787296178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787296174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Central America
+  ContinentName: North America
+  InternalID: 0
 --- !u!1 &1801726456
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,6 +3727,7 @@ GameObject:
   - component: {fileID: 1801726457}
   - component: {fileID: 1801726459}
   - component: {fileID: 1801726458}
+  - component: {fileID: 1801726460}
   m_Layer: 5
   m_Name: Ukraine
   m_TagString: Untagged
@@ -3262,6 +3791,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1801726456}
   m_CullTransparentMesh: 0
+--- !u!114 &1801726460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801726456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Ukraine
+  ContinentName: Europe
+  InternalID: 0
 --- !u!1 &1826057705
 GameObject:
   m_ObjectHideFlags: 0
@@ -3273,6 +3817,7 @@ GameObject:
   - component: {fileID: 1826057706}
   - component: {fileID: 1826057708}
   - component: {fileID: 1826057707}
+  - component: {fileID: 1826057709}
   m_Layer: 5
   m_Name: Irkutsk
   m_TagString: Untagged
@@ -3336,6 +3881,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826057705}
   m_CullTransparentMesh: 0
+--- !u!114 &1826057709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826057705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Irkutsk
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1849368764
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,6 +3907,7 @@ GameObject:
   - component: {fileID: 1849368765}
   - component: {fileID: 1849368767}
   - component: {fileID: 1849368766}
+  - component: {fileID: 1849368768}
   m_Layer: 5
   m_Name: India
   m_TagString: Untagged
@@ -3410,6 +3971,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1849368764}
   m_CullTransparentMesh: 0
+--- !u!114 &1849368768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849368764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: India
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1869834119
 GameObject:
   m_ObjectHideFlags: 0
@@ -3421,6 +3997,7 @@ GameObject:
   - component: {fileID: 1869834120}
   - component: {fileID: 1869834122}
   - component: {fileID: 1869834121}
+  - component: {fileID: 1869834123}
   m_Layer: 5
   m_Name: Kamchatka
   m_TagString: Untagged
@@ -3484,6 +4061,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1869834119}
   m_CullTransparentMesh: 0
+--- !u!114 &1869834123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869834119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Kamchatka
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &1883231662
 GameObject:
   m_ObjectHideFlags: 0
@@ -3495,6 +4087,7 @@ GameObject:
   - component: {fileID: 1883231663}
   - component: {fileID: 1883231665}
   - component: {fileID: 1883231664}
+  - component: {fileID: 1883231666}
   m_Layer: 5
   m_Name: EasternUS
   m_TagString: Untagged
@@ -3558,6 +4151,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883231662}
   m_CullTransparentMesh: 0
+--- !u!114 &1883231666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883231662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Eastern US
+  ContinentName: North America
+  InternalID: 0
 --- !u!1 &1918740136
 GameObject:
   m_ObjectHideFlags: 0
@@ -3569,6 +4177,7 @@ GameObject:
   - component: {fileID: 1918740137}
   - component: {fileID: 1918740139}
   - component: {fileID: 1918740138}
+  - component: {fileID: 1918740140}
   m_Layer: 5
   m_Name: Ontario
   m_TagString: Untagged
@@ -3632,6 +4241,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918740136}
   m_CullTransparentMesh: 0
+--- !u!114 &1918740140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918740136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Ontario
+  ContinentName: North America
+  InternalID: 0
 --- !u!1 &1988425360
 GameObject:
   m_ObjectHideFlags: 0
@@ -3643,6 +4267,7 @@ GameObject:
   - component: {fileID: 1988425361}
   - component: {fileID: 1988425363}
   - component: {fileID: 1988425362}
+  - component: {fileID: 1988425364}
   m_Layer: 5
   m_Name: Ural
   m_TagString: Untagged
@@ -3706,6 +4331,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1988425360}
   m_CullTransparentMesh: 0
+--- !u!114 &1988425364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988425360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Ural
+  ContinentName: Asia
+  InternalID: 0
 --- !u!1 &2015976660
 GameObject:
   m_ObjectHideFlags: 0
@@ -3882,6 +4522,7 @@ GameObject:
   - component: {fileID: 2128695212}
   - component: {fileID: 2128695214}
   - component: {fileID: 2128695213}
+  - component: {fileID: 2128695215}
   m_Layer: 5
   m_Name: EastAfrica
   m_TagString: Untagged
@@ -3945,3 +4586,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2128695211}
   m_CullTransparentMesh: 0
+--- !u!114 &2128695215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128695211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c54f4b1dca538544b54fd0ddbd1e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: East Africa
+  ContinentName: Africa
+  InternalID: 0

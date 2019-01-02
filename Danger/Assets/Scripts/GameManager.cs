@@ -15,6 +15,16 @@ public class GameManager : MonoBehaviour {
 
     public static Player NotOwned = new Player("Neutral");
 
+    public class ReadyEventArgs : System.EventArgs
+    {
+        public readonly bool Success;
+        public ReadyEventArgs(bool success) : base()
+        {
+            Success = success;
+        }
+    }
+    public static System.EventHandler<ReadyEventArgs> Ready;
+
     public static Continent NorthAmerica { get { return Continents.FirstOrDefault(x => x.Name == "North America"); } }
     public static Continent SouthAmerica { get { return Continents.FirstOrDefault(x => x.Name == "South America"); } }
     public static Continent Europe { get { return Continents.FirstOrDefault(x => x.Name == "Europe"); } }
@@ -28,6 +38,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private static bool started = false;
+    private static bool startedSuccessfully = false;
     public static void Initialise()
     {
         if (started)
@@ -42,6 +53,15 @@ public class GameManager : MonoBehaviour {
         SetExternalMovement();
         CreateDangerCards();
         CreatePlayers("Bob", "Dave");
+
+        if(Ready == null)
+        {
+        } else
+        {
+            Debug.LogWarning("Invoked");
+            startedSuccessfully = true;
+            Ready.Invoke(null, new ReadyEventArgs(startedSuccessfully));
+        }
     }
     private static void CreateContinents()
     {
@@ -94,7 +114,7 @@ public class GameManager : MonoBehaviour {
             new Territory("East Africa", africa),
             new Territory("Egypt", africa),
             new Territory("Madagascar", africa),
-            new Territory("North Africa", africa),
+            new Territory("West Africa", africa),
             new Territory("South Africa", africa),
         };
         africa.SetIds();
@@ -126,6 +146,7 @@ public class GameManager : MonoBehaviour {
             new Territory("Indonesia", australia),
             new Territory("New Guinea", australia),
             new Territory("Western Australia", australia),
+            new Territory("New Zealand", australia) // since liliana added it
         };
         australia.SetIds();
         Continents.Add(australia);
@@ -190,7 +211,8 @@ public class GameManager : MonoBehaviour {
         Australia.AllMove(1, 3, 4);
         Australia.AllMove(2, 3, 4);
         Australia.AllMove(3, 1, 2, 4);
-        Australia.AllMove(4, 2, 1, 3);
+        Australia.AllMove(4, 2, 1, 3, 5);
+        Australia.AllMove(5, 4);
     }
 
     private static void SetExternalMovement()
@@ -265,20 +287,26 @@ public class GameManager : MonoBehaviour {
         //Debug.Log(Europe.Display());
         //Debug.Log(Europe.GetTerritory(1).Display(true));
 
-        foreach(var continent in Continents)
+        GameManager.Ready += GameStart;
+	}
+
+    void GameStart(object sender, ReadyEventArgs e)
+    {
+        Ready -= GameStart;
+        foreach (var continent in Continents)
         {
             string str = continent.Name + ".";
             str += continent.Territories.Count.ToString() + ".";
-            foreach(var t in continent.Territories)
+            foreach (var t in continent.Territories)
             {
-                str += t.Display(true) + ", "; 
+                str += t.Display(true) + ", ";
             }
             Debug.Log(str);
         }
-	}
+    }
 	
-	// Update is called once per frame
-	void Update () {
-		
+	void FixedUpdate () {
+        if (Ready != null && startedSuccessfully)
+            Ready.Invoke(null, new ReadyEventArgs(true));
 	}
 }
