@@ -7,8 +7,14 @@ using UnityEngine.UI;
 public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
 {
 	void Start () {
-        Startup();
+        GameManager.Ready += GameReady;
 	}
+
+    void GameReady(object sender, GameManager.ReadyEventArgs e)
+    {
+        GameManager.Ready -= GameReady;
+        Startup();
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -20,5 +26,8 @@ public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
 
 
     public abstract void Clicked();
+    /// <summary>
+    /// Only triggered when the GameManager has finished
+    /// </summary>
     public abstract void Startup();
 }

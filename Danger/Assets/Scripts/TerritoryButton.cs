@@ -15,7 +15,7 @@ public class TerritoryButton : ImageButton {
         } }
     public Territory Territory {  get
         {
-            return Continent.GetTerritory(InternalID);
+            return Continent.Territories.FirstOrDefault(x => x.Name == Name || x.ID == InternalID);
         } }
 
     public override void Clicked()
@@ -25,5 +25,13 @@ public class TerritoryButton : ImageButton {
 
     public override void Startup()
     {
+        if (Continent == null)
+        {
+            Debug.LogError("No Continent for gameobject " + this.name); // small 'n' for name is intentional
+        }
+        if (Territory == null)
+        {
+            Debug.LogError("No territory for gameobject " + this.name);
+        }
     }
 }
