@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System;
 using Extensions;
 
+[RequireComponent(typeof(RectTransform))]
 public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
 {
     public UnityEngine.UI.Text text;
@@ -13,11 +14,13 @@ public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
     public UnityEngine.UI.Text text3;
     public Canvas canvas;
     private RectTransform canvasRect;
+    private RectTransform thisRect;
     public Texture2D Image;
 	void Start ()
     {
         Startup();
         canvasRect = canvas.GetComponent<RectTransform>();
+        thisRect = gameObject.GetComponent<RectTransform>();
 	}
 
     private Vector3 MoveFromCentreToLocal(Vector3 relativeToCentre)
@@ -27,7 +30,7 @@ public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
         int y = (int)relativeToCentre.y;
 
         // we need to deduct from the position of the transform
-        Debug.Log(transform.localPosition.ToString());
+        Debug.Log(thisRect.localPosition.ToString());
         x -= (int)transform.localPosition.x;
         y -= (int)transform.localPosition.y;
 
@@ -37,9 +40,15 @@ public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
 
     private Vector2Int GetPixelPoint(PointerEventData dat)
     {
-        Vector3 localPos = transform.InverseTransformPoint(dat.pressPosition);
-        Debug.Log("Centre: " + localPos.ToString());
-        localPos = MoveFromCentreToLocal(localPos);
+        Vector3 canvasPosition = canvas.ScreenToCanvasPosition(Input.mousePosition);
+        text2.text = canvasPosition.ToString();
+        Debug.Log("Centre: " + canvasPosition.ToString());
+        Vector3 localPos = MoveFromCentreToLocal(canvasPosition);
+        // localPos is RELATIVE TO CENTRE OF RECTANGLE
+        // so it needs to be transferred to be relative to the top-left of the rectangle
+        // which again should just mean deducting the rectangle's width/height i think, 
+        // which should be accessible via its RectTransform - Nearly there! :D
+        text3.text = localPos.ToString();
         var clr = Image.GetPixel((int)localPos.x, (int)localPos.y);
         Debug.Log(clr);
         text3.color = clr;
@@ -65,7 +74,7 @@ public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
         // ie: only trigger if they actually click the image
         var pixelPos = GetPixelPoint(eventData);
         Debug.Log(pixelPos);
-        text2.text = pixelPos.ToString();
+        //text2.text = pixelPos.ToString();
 
         Clicked();
     }
