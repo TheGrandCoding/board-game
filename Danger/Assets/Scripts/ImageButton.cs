@@ -16,6 +16,17 @@ public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
     private RectTransform canvasRect;
     private RectTransform thisRect;
     public Texture2D Image;
+    private float Width
+    {
+        get
+        {
+            return thisRect.rect.width /** canvas.scaleFactor*/;
+        }
+    }
+    private float Height { get
+        {
+            return thisRect.rect.height /** canvas.scaleFactor*/;
+        } }
 	void Start ()
     {
         Startup();
@@ -49,6 +60,16 @@ public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
         // which again should just mean deducting the rectangle's width/height i think, 
         // which should be accessible via its RectTransform - Nearly there! :D
         text3.text = localPos.ToString();
+
+        int x = (int)localPos.x;
+        int y = (int)localPos.y;
+
+        Debug.Log("Width, Height: " + Width.ToString() + ", " + Height.ToString());
+        var x1 = x + (Width / 2);
+        var y1 = ((-y) + (Height / 2));
+
+        localPos = new Vector3(x1, y1);
+
         var clr = Image.GetPixel((int)localPos.x, (int)localPos.y);
         Debug.Log(clr);
         text3.color = clr;
