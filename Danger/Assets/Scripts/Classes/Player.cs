@@ -20,7 +20,9 @@ public class Player {
                     terr.Add(item.Territory);
             }
             return terr;
-        } } 
+        } }
+    public Territory CapitalCity;
+    public int ChoiceIndex;
 
 	// Use this for initialization
 	void Start () {

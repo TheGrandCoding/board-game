@@ -4,18 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
+public abstract class ImageButton : DangerGameObject, IPointerClickHandler
 {
-	void Start () {
-        GameManager.Ready += GameReady;
-	}
-
-    void GameReady(object sender, GameManager.ReadyEventArgs e)
-    {
-        GameManager.Ready -= GameReady;
-        Startup();
-    }
-
+	
     public void OnPointerClick(PointerEventData eventData)
     {
         // TODO: get pixel at clicked place, ensure its alpha is set?
@@ -24,10 +15,6 @@ public abstract class ImageButton : MonoBehaviour, IPointerClickHandler
         Clicked();
     }
 
-
     public abstract void Clicked();
-    /// <summary>
-    /// Only triggered when the GameManager has finished
-    /// </summary>
-    public abstract void Startup();
+
 }

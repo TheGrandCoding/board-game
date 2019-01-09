@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using RandomGens;
 
 public class GameManager : MonoBehaviour {
 
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour {
     public static List<DangerCard> RemainingCards;
 
     public static Player NotOwned = new Player("Neutral");
+
+    public static Player StartPlayer;
 
     public class ReadyEventArgs : System.EventArgs
     {
@@ -62,6 +65,8 @@ public class GameManager : MonoBehaviour {
             startedSuccessfully = true;
             Ready.Invoke(null, new ReadyEventArgs(startedSuccessfully));
         }
+
+        InitialStartGame();
     }
     private static void CreateContinents()
     {
@@ -272,6 +277,97 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private static void InitialStartGame()
+    {
+        Start_ChosePlayer();
+#if DEBUG
+        Debug_Start_RandomCapitals();
+#endif
+        Start_RandomiseRemainingTerritories();
+    }
+
+    private static void Start_ChosePlayer()
+    {
+        Dictionary<Player, int> DiceRolls = new Dictionary<Player, int>();
+        foreach(var player in Players)
+        {
+            var roll = Dice.RollSixSided();
+            DiceRolls.Add(player, roll);
+        }
+        Player highestPlayer = null;
+        int highestRoll = 0;
+
+        foreach(var keypair in DiceRolls)
+        {
+            if(keypair.Value > highestRoll)
+            {
+                highestRoll = keypair.Value;
+                highestPlayer = keypair.Key;
+            }
+        }
+
+        StartPlayer = highestPlayer;
+        int startIndex = Players.IndexOf(StartPlayer);
+        int newIndexOfPlayers = 0;
+        while(newIndexOfPlayers < Players.Count)
+        {
+            var player = Players[startIndex];
+            player.ChoiceIndex = newIndexOfPlayers;
+            newIndexOfPlayers++;
+            startIndex++;
+            if (startIndex >= Players.Count)
+                startIndex = 0;
+        }
+        Players = Players.OrderBy(x => x.ChoiceIndex).ToList();
+        Debug.Log("Start player: " + highestPlayer.Name);
+
+    }
+
+    private static void Debug_Start_RandomCapitals()
+    {
+        foreach(var player in Players)
+        {
+            while(player.CapitalCity == null)
+            {
+                var randomTerritory = RndHelp.Choose<Territory>(Territories);
+                Start_SetCapital(player, randomTerritory);
+            }
+        }
+    }
+
+    private static void Start_SetCapital(Player p, Territory capital)
+    {
+        if(p.CapitalCity == null)
+        {
+            Debug.Log("Setting capital of " + p.Name + " to " + capital.ToString());
+            p.CapitalCity = capital;
+            capital.Owner = p;
+        } else
+        {
+            Debug.LogWarning(string.Format("Attempted to set {0}'s capital to {1}, but it was already set as {2}", p.Name, capital.Name, p.CapitalCity.Name));
+        }
+    }
+    private static void Start_SetCapital(string p, string name) // since im not sure how we'll be implementing it, i'll add this in too
+    {
+        Start_SetCapital(Players.FirstOrDefault(x => x.Name == p), GetTerritory(name));
+    }
+    private static void Start_RandomiseRemainingTerritories()
+    {
+        var remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
+
+        while (remaining.Count > 0)
+        {
+            foreach (var player in Players)
+            {
+                var terr = remaining.First();
+                remaining.RemoveAt(0);
+                Debug.Log(string.Format("Setting {0} owner for {1} remaining {2}", terr.ToString(), player.Name, remaining.Count));
+                terr.Owner = player;
+            }
+            remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
+        }
+    }
+
     public static bool CanMove(Territory t1, Territory t2)
     {
         return t1.WhereCanMove.Contains(t2) || t2.WhereCanMove.Contains(t1); 
@@ -281,16 +377,16 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        GameManager.Ready += GameStart;
         Initialise();
         //Debug.Log(Europe.Display());
         //Debug.Log(Europe.GetTerritory(1).Display(true));
 
-        GameManager.Ready += GameStart;
-	}
+    }
 
-    void GameStart(object sender, ReadyEventArgs e)
+    public void GameStart(object sender, ReadyEventArgs e)
     {
-        Ready -= GameStart;
+        GameManager.Ready -= GameStart;
         foreach (var continent in Continents)
         {
             string str = continent.Name + ".";
