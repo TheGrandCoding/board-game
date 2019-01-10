@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour {
             return Continents.SelectMany(x => x.Territories).ToList();
         } }
     public static List<DangerCard> RemainingCards;
+    private static GameManager Instance;
+    void Awake()
+    {
+        Instance = this;
+    }
 
     public static Player NotOwned = new Player("Neutral");
 
@@ -27,6 +32,7 @@ public class GameManager : MonoBehaviour {
         }
     }
     public static System.EventHandler<ReadyEventArgs> Ready;
+
 
     public static Continent NorthAmerica { get { return Continents.FirstOrDefault(x => x.Name == "North America"); } }
     public static Continent SouthAmerica { get { return Continents.FirstOrDefault(x => x.Name == "South America"); } }
@@ -279,11 +285,21 @@ public class GameManager : MonoBehaviour {
 
     private static void InitialStartGame()
     {
+#if DEBUG
+        if(Players == null || Players.Count == 0)
+        {
+            Players = new List<Player>() {
+                new Player("Alex"),
+                new Player("Bob")
+            };
+
+        }
+#endif
         Start_ChosePlayer();
 #if DEBUG
-        Debug_Start_RandomCapitals();
+        //Debug_Start_RandomCapitals();
+        Instance.StartCoroutine(Instance.Start_EnumeratorThings());
 #endif
-        Start_RandomiseRemainingTerritories();
     }
 
     private static void Start_ChosePlayer()
@@ -335,6 +351,24 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    IEnumerator Start_EnumeratorThings()
+    {
+        // since some things need to wait for player input / run on different thread
+        // we should call this function and then handle them
+
+        yield return Start_SelectCategories();
+
+        yield return Start_RandomiseRemainingTerritories();
+    }
+
+    IEnumerator Start_SelectCategories()
+    {
+        Debug.Log("Started coro");
+        var chosen = UIHelper.NextTerritoryClicked(timeout: System.TimeSpan.FromSeconds(10));
+        Debug.LogWarning(chosen.Name);
+        yield return true;
+    }
+
     private static void Start_SetCapital(Player p, Territory capital)
     {
         if(p.CapitalCity == null)
@@ -351,8 +385,9 @@ public class GameManager : MonoBehaviour {
     {
         Start_SetCapital(Players.FirstOrDefault(x => x.Name == p), GetTerritory(name));
     }
-    private static void Start_RandomiseRemainingTerritories()
+    IEnumerator Start_RandomiseRemainingTerritories()
     {
+        Debug.Log("Start rand remaining");
         var remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
 
         while (remaining.Count > 0)
@@ -361,11 +396,11 @@ public class GameManager : MonoBehaviour {
             {
                 var terr = remaining.First();
                 remaining.RemoveAt(0);
-                Debug.Log(string.Format("Setting {0} owner for {1} remaining {2}", terr.ToString(), player.Name, remaining.Count));
                 terr.Owner = player;
             }
             remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
         }
+        yield return null;
     }
 
     public static bool CanMove(Territory t1, Territory t2)
