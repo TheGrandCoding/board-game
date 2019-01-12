@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using RandomGens;
 
 public class GameManager : MonoBehaviour {
 
@@ -12,8 +13,15 @@ public class GameManager : MonoBehaviour {
             return Continents.SelectMany(x => x.Territories).ToList();
         } }
     public static List<DangerCard> RemainingCards;
+    private static GameManager Instance;
+    void Awake()
+    {
+        Instance = this;
+    }
 
     public static Player NotOwned = new Player("Neutral");
+
+    public static Player StartPlayer;
 
     public class ReadyEventArgs : System.EventArgs
     {
@@ -24,6 +32,7 @@ public class GameManager : MonoBehaviour {
         }
     }
     public static System.EventHandler<ReadyEventArgs> Ready;
+
 
     public static Continent NorthAmerica { get { return Continents.FirstOrDefault(x => x.Name == "North America"); } }
     public static Continent SouthAmerica { get { return Continents.FirstOrDefault(x => x.Name == "South America"); } }
@@ -54,7 +63,7 @@ public class GameManager : MonoBehaviour {
         CreateDangerCards();
         CheckPlayers();
 
-        if(Ready == null)
+        if (Ready == null)
         {
         } else
         {
@@ -62,6 +71,8 @@ public class GameManager : MonoBehaviour {
             startedSuccessfully = true;
             Ready.Invoke(null, new ReadyEventArgs(startedSuccessfully));
         }
+
+        InitialStartGame();
     }
     private static void CreateContinents()
     {
@@ -251,7 +262,7 @@ public class GameManager : MonoBehaviour {
     {
         // each territory has 1 card, 
         var dangerCards = new List<DangerCard>();
-        foreach(var territory in Territories)
+        foreach (var territory in Territories)
         {
             var newCard = new DangerCard(territory, RandomGens.ArmyTypes.ThrowDice());
             dangerCards.Add(newCard);
@@ -266,11 +277,142 @@ public class GameManager : MonoBehaviour {
     private static void CheckPlayers()
     {
         Players = PlayerManager.Players;
-        foreach(var p in Players)
+        foreach (var p in Players)
         {
             Debug.Log(p.Name);
         }
     }
+
+    private static void InitialStartGame()
+    {
+#if DEBUG
+        if (Players == null || Players.Count == 0)
+        {
+            Players = new List<Player>() {
+                new Player("Alex"),
+                new Player("Bob")
+            };
+
+        }
+#endif
+        Start_ChosePlayer();
+#if DEBUG
+        //Debug_Start_RandomCapitals();
+        //#else
+        Start_SelectCapitals();
+#endif
+    }
+
+    private static void Start_ChosePlayer()
+    {
+        Dictionary<Player, int> DiceRolls = new Dictionary<Player, int>();
+        foreach (var player in Players)
+        {
+            var roll = Dice.RollSixSided();
+            DiceRolls.Add(player, roll);
+        }
+        Player highestPlayer = null;
+        int highestRoll = 0;
+
+        foreach (var keypair in DiceRolls)
+        {
+            if (keypair.Value > highestRoll)
+            {
+                highestRoll = keypair.Value;
+                highestPlayer = keypair.Key;
+            }
+        }
+
+        StartPlayer = highestPlayer;
+        int startIndex = Players.IndexOf(StartPlayer);
+        int newIndexOfPlayers = 0;
+        while (newIndexOfPlayers < Players.Count)
+        {
+            var player = Players[startIndex];
+            player.ChoiceIndex = newIndexOfPlayers;
+            newIndexOfPlayers++;
+            startIndex++;
+            if (startIndex >= Players.Count)
+                startIndex = 0;
+        }
+        Players = Players.OrderBy(x => x.ChoiceIndex).ToList();
+        Debug.Log("Start player: " + highestPlayer.Name);
+
+    }
+
+    private static void Debug_Start_RandomCapitals()
+    {
+        foreach (var player in Players)
+        {
+            while (player.CapitalCity == null)
+            {
+                var randomTerritory = RndHelp.Choose<Territory>(Territories);
+                Start_SetCapital(player, randomTerritory);
+            }
+        }
+    }
+
+
+    private static void Start_SetCapital(Player p, Territory capital)
+    {
+        if (p.CapitalCity == null)
+        {
+            Debug.Log("Setting capital of " + p.Name + " to " + capital.ToString());
+            p.CapitalCity = capital;
+            capital.Owner = p;
+        } else
+        {
+            Debug.LogWarning(string.Format("Attempted to set {0}'s capital to {1}, but it was already set as {2}", p.Name, capital.Name, p.CapitalCity.Name));
+        }
+    }
+    private static void Start_SetCapital(string p, string name) // since im not sure how we'll be implementing it, i'll add this in too
+    {
+        Start_SetCapital(Players.FirstOrDefault(x => x.Name == p), GetTerritory(name));
+    }
+    private static void Start_RandomiseRemainingTerritories()
+    {
+        Debug.Log("Start rand remaining");
+        var remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
+
+        while (remaining.Count > 0)
+        {
+            foreach (var player in Players)
+            {
+                var terr = remaining.First();
+                remaining.RemoveAt(0);
+                terr.Owner = player;
+            }
+            remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
+        }
+    }
+
+    private static void Start_SelectCapitals()
+    {
+        var p1 = Players[0];
+        UIHelper.RunOnTerritoryConfirmed(
+            new TerritoryDisplayCriteria(ownedBy:NotOwned),
+            playerConfirmedTerritory, p1);
+
+    }
+
+    private static void playerConfirmedTerritory(Territory t, TerritoryDisplayCriteria c, object state)
+    {
+        var player = (Player)state;
+        Start_SetCapital(player, t);
+        var nextid = player.ChoiceIndex + 1;
+        var nextPlayer = Players.ElementAtOrDefault(nextid);
+        if(nextPlayer == null)
+        {
+            Debug.Log("All capitals done! Randomising territories..");
+            Start_RandomiseRemainingTerritories();
+        } else
+        {
+            UIHelper.RunOnTerritoryConfirmed(
+                new TerritoryDisplayCriteria(ownedBy: NotOwned),
+                playerConfirmedTerritory, nextPlayer);
+        }
+    }
+
 
     public static bool CanMove(Territory t1, Territory t2)
     {
@@ -281,16 +423,16 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        GameManager.Ready += GameStart;
         Initialise();
         //Debug.Log(Europe.Display());
         //Debug.Log(Europe.GetTerritory(1).Display(true));
 
-        GameManager.Ready += GameStart;
-	}
+    }
 
-    void GameStart(object sender, ReadyEventArgs e)
+    public void GameStart(object sender, ReadyEventArgs e)
     {
-        Ready -= GameStart;
+        GameManager.Ready -= GameStart;
         foreach (var continent in Continents)
         {
             string str = continent.Name + ".";

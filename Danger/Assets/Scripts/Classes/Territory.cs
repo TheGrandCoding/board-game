@@ -31,4 +31,23 @@ public class Territory {
         }
         return string.Format("[{0}] {1} - {2} vs {3} | {4}{5}", ID, Name, DefendingArmies.Count, AttackingArmies.Count, Owner.Name, displayWhereCanMove ? where : "");
     }
+
+    /// <summary>
+    /// CN = Continent Name
+    /// NM = Name
+    /// ID = ID
+    /// OWN = Owner Name
+    /// </summary>
+    public string ToString(string format)
+    {
+        format = format.Replace("CN", "{0}");
+        format = format.Replace("NM", "{1}");
+        format = format.Replace("ID", "{2}");
+        format = format.Replace("OWN", "{3}");
+        return string.Format(format, this.Continent.Name, this.Name, this.ID, this.Owner == null ? "" : this.Owner.Name);
+    }
+    public override string ToString()
+    {
+        return this.ToString("CN NM");
+    }
 }
