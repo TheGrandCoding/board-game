@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour {
         CreateDangerCards();
         CheckPlayers();
 
-        if(Ready == null)
+        if (Ready == null)
         {
         } else
         {
@@ -262,7 +262,7 @@ public class GameManager : MonoBehaviour {
     {
         // each territory has 1 card, 
         var dangerCards = new List<DangerCard>();
-        foreach(var territory in Territories)
+        foreach (var territory in Territories)
         {
             var newCard = new DangerCard(territory, RandomGens.ArmyTypes.ThrowDice());
             dangerCards.Add(newCard);
@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour {
     private static void CheckPlayers()
     {
         Players = PlayerManager.Players;
-        foreach(var p in Players)
+        foreach (var p in Players)
         {
             Debug.Log(p.Name);
         }
@@ -286,7 +286,7 @@ public class GameManager : MonoBehaviour {
     private static void InitialStartGame()
     {
 #if DEBUG
-        if(Players == null || Players.Count == 0)
+        if (Players == null || Players.Count == 0)
         {
             Players = new List<Player>() {
                 new Player("Alex"),
@@ -298,14 +298,15 @@ public class GameManager : MonoBehaviour {
         Start_ChosePlayer();
 #if DEBUG
         //Debug_Start_RandomCapitals();
-        Instance.StartCoroutine(Instance.Start_EnumeratorThings());
+        //#else
+        Start_SelectCapitals();
 #endif
     }
 
     private static void Start_ChosePlayer()
     {
         Dictionary<Player, int> DiceRolls = new Dictionary<Player, int>();
-        foreach(var player in Players)
+        foreach (var player in Players)
         {
             var roll = Dice.RollSixSided();
             DiceRolls.Add(player, roll);
@@ -313,9 +314,9 @@ public class GameManager : MonoBehaviour {
         Player highestPlayer = null;
         int highestRoll = 0;
 
-        foreach(var keypair in DiceRolls)
+        foreach (var keypair in DiceRolls)
         {
-            if(keypair.Value > highestRoll)
+            if (keypair.Value > highestRoll)
             {
                 highestRoll = keypair.Value;
                 highestPlayer = keypair.Key;
@@ -325,7 +326,7 @@ public class GameManager : MonoBehaviour {
         StartPlayer = highestPlayer;
         int startIndex = Players.IndexOf(StartPlayer);
         int newIndexOfPlayers = 0;
-        while(newIndexOfPlayers < Players.Count)
+        while (newIndexOfPlayers < Players.Count)
         {
             var player = Players[startIndex];
             player.ChoiceIndex = newIndexOfPlayers;
@@ -341,9 +342,9 @@ public class GameManager : MonoBehaviour {
 
     private static void Debug_Start_RandomCapitals()
     {
-        foreach(var player in Players)
+        foreach (var player in Players)
         {
-            while(player.CapitalCity == null)
+            while (player.CapitalCity == null)
             {
                 var randomTerritory = RndHelp.Choose<Territory>(Territories);
                 Start_SetCapital(player, randomTerritory);
@@ -351,27 +352,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    IEnumerator Start_EnumeratorThings()
-    {
-        // since some things need to wait for player input / run on different thread
-        // we should call this function and then handle them
-
-        yield return Start_SelectCategories();
-
-        yield return Start_RandomiseRemainingTerritories();
-    }
-
-    IEnumerator Start_SelectCategories()
-    {
-        Debug.Log("Started coro");
-        var chosen = UIHelper.NextTerritoryClicked(timeout: System.TimeSpan.FromSeconds(10));
-        Debug.LogWarning(chosen.Name);
-        yield return true;
-    }
 
     private static void Start_SetCapital(Player p, Territory capital)
     {
-        if(p.CapitalCity == null)
+        if (p.CapitalCity == null)
         {
             Debug.Log("Setting capital of " + p.Name + " to " + capital.ToString());
             p.CapitalCity = capital;
@@ -385,7 +369,7 @@ public class GameManager : MonoBehaviour {
     {
         Start_SetCapital(Players.FirstOrDefault(x => x.Name == p), GetTerritory(name));
     }
-    IEnumerator Start_RandomiseRemainingTerritories()
+    private static void Start_RandomiseRemainingTerritories()
     {
         Debug.Log("Start rand remaining");
         var remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
@@ -400,8 +384,35 @@ public class GameManager : MonoBehaviour {
             }
             remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
         }
-        yield return null;
     }
+
+    private static void Start_SelectCapitals()
+    {
+        var p1 = Players[0];
+        UIHelper.RunOnTerritoryConfirmed(
+            new TerritoryDisplayCriteria(ownedBy:NotOwned),
+            playerConfirmedTerritory, p1);
+
+    }
+
+    private static void playerConfirmedTerritory(Territory t, TerritoryDisplayCriteria c, object state)
+    {
+        var player = (Player)state;
+        Start_SetCapital(player, t);
+        var nextid = player.ChoiceIndex + 1;
+        var nextPlayer = Players.ElementAtOrDefault(nextid);
+        if(nextPlayer == null)
+        {
+            Debug.Log("All capitals done! Randomising territories..");
+            Start_RandomiseRemainingTerritories();
+        } else
+        {
+            UIHelper.RunOnTerritoryConfirmed(
+                new TerritoryDisplayCriteria(ownedBy: NotOwned),
+                playerConfirmedTerritory, nextPlayer);
+        }
+    }
+
 
     public static bool CanMove(Territory t1, Territory t2)
     {

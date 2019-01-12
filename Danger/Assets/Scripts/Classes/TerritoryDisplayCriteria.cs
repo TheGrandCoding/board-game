@@ -42,27 +42,6 @@ public class TerritoryDisplayCriteria
         MustHaveNoMoreThanArmies = new Optional<int>();
     }
 
-    /// <summary>
-    /// Continent related criterias, can be left blank to have same affect as an empty constructor
-    /// </summary>
-    public TerritoryDisplayCriteria(Continent mustBeIn = null, Continent mustNotBeIn = null)
-    {
-        MustBeInContinent = new Optional<Continent>(mustBeIn);
-        MustNOTBeInContinent = new Optional<Continent>(mustNotBeIn);
-    }
-
-    public TerritoryDisplayCriteria(Player ownedBy = null, Player notOwnedBy = null)
-    {
-        MustBeOwnedBy = new Optional<Player>(ownedBy);
-        MustNOTBeOwnedBy = new Optional<Player>(notOwnedBy);
-    }
-
-    public TerritoryDisplayCriteria(int defendingArmiesAtleast = int.MinValue, int defendingArmiesAtMost = int.MaxValue)
-    {
-        MustHaveAtleastArmies = new Optional<int>(defendingArmiesAtleast);
-        MustHaveNoMoreThanArmies = new Optional<int>(defendingArmiesAtMost);
-    }
-
     public TerritoryDisplayCriteria(Continent mustBeIn = null, Continent mustNotBeIn = null, Player ownedBy = null, Player notOwnedBy = null, int defendingArmiesAtleast = int.MinValue, int defendingArmiesAtMost = int.MaxValue)
     {
         MustBeInContinent = new Optional<Continent>(mustBeIn);

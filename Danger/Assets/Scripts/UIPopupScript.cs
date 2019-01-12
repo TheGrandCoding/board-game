@@ -5,23 +5,21 @@ using UnityEngine.UI;
 
 public class UIPopupScript : MonoBehaviour
 {
-    public static event System.EventHandler<Territory> TerritoryConfirmed;
     public Territory Territory;
     public Text Status;
     public Text Name;
     public Text Continent;
     public Text Owner;
-    public Renderer Renderer;
     public TerritoryDisplayCriteria Criteria;
 
     public static UIPopupScript Script;
 
     public bool IsDisplayed { get
         {
-            return Renderer.enabled;
+            return gameObject.activeInHierarchy;
         } set
         {
-            Renderer.enabled = value;
+            gameObject.SetActive(value);
         }
     }
     public Button ConfirmBtn;
@@ -31,7 +29,7 @@ public class UIPopupScript : MonoBehaviour
     /// </summary>
     public void ClickConfirm()
     {
-        TerritoryConfirmed?.Invoke(this, Territory);
+        UIHelper.ConfirmedSoRunTask(Territory);
     }
 
     public void Display(Territory territory)
@@ -45,6 +43,8 @@ public class UIPopupScript : MonoBehaviour
 
     public static bool DisplayIfSatisfy(Territory t)
     {
+        if (Script.Criteria == null)
+            return false;
         if(Script.Criteria.DoesSatisfy(t))
         {
             Script.Display(t);

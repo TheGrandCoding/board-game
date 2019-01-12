@@ -11,53 +11,27 @@ public class UIHelper : MonoBehaviour
     void Awake() { instance = this; }
     public static UIPopupScript CurrentPopUp;
     public static TerritoryDisplayCriteria CurrentCriteria;
+    private static Action<Territory, TerritoryDisplayCriteria, object> CurrentAction;
+    private static object SavedObject;
 
-    private static Territory lastClickedSatisfy = null;
-    public static Territory NextTerritoryClicked(TimeSpan? timeout = null, TerritoryDisplayCriteria criteria = null)
+    public static void ConfirmedSoRunTask(Territory t)
     {
-        timeout = timeout ?? TimeSpan.FromSeconds(180);
-        criteria = criteria ?? new TerritoryDisplayCriteria();
-
-        CurrentPopUp = CurrentPopUp ?? GameObject.FindGameObjectWithTag("UIPopup").GetComponent<UIPopupScript>();
-        Debug.Log("Line19");
-        CurrentPopUp.gameObject.SetActive(true);
-        CurrentPopUp.WantingTerritory(criteria);
-
-        var cd = new CoroutineWithData(instance, NextTerritoryAsync(timeout.Value, criteria));
-        yield return cd.coroutine;
-        lastClickedSatisfy = (Territory)cd.result;
-
-        while(lastClickedSatisfy == null)
-        {
-            yield return null;
-        }
-        CurrentPopUp.gameObject.SetActive(false);
-        var item = lastClickedSatisfy;
-        lastClickedSatisfy = null;
-        yield return item;
+        CurrentCriteria = null;
+        CurrentPopUp.IsDisplayed = false;
+        CurrentAction.Invoke(t, CurrentCriteria, SavedObject);
     }
 
-    private static IEnumerator NextTerritoryAsync(TimeSpan timeout, TerritoryDisplayCriteria criteria)
+    public static void RunOnTerritoryConfirmed(TerritoryDisplayCriteria criteria, Action<Territory, TerritoryDisplayCriteria, object> function, object passedParam = null)
     {
+        if(CurrentCriteria != null)
+        {
+            Debug.LogWarning("New RunOnTerritory may override an old one");
+        }
+        CurrentAction = function;
+        SavedObject = passedParam;
         CurrentCriteria = criteria;
-        var eventTrigger = new TaskCompletionSource<Territory>();
-
-        void Handler(object sender, Territory territory)
-        {
-            var result = CurrentCriteria.DoesSatisfy(territory);
-            if (result)
-                eventTrigger.SetResult(territory);
-        }
-        UIPopupScript.TerritoryConfirmed += Handler;
-
-        var trigger = eventTrigger.Task;
-        var delay = Task.Delay((int)timeout.TotalMilliseconds);
-        var task = Task.WhenAny(trigger, delay).ConfigureAwait(false);
-
-        while(!task.GetAwaiter().IsCompleted)
-        {
-            yield return new WaitForFixedUpdate();
-        }
-        UIPopupScript.TerritoryConfirmed -= Handler;
+        CurrentPopUp = CurrentPopUp ?? GameObject.FindGameObjectWithTag("UIPopup").GetComponent<UIPopupScript>();
+        CurrentPopUp.WantingTerritory(criteria);
+        CurrentPopUp.IsDisplayed = true;
     }
 }
