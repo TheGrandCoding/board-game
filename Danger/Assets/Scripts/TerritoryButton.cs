@@ -21,7 +21,8 @@ public class TerritoryButton : ImageButton {
     public override void Clicked()
     {
         Debug.Log("Clicked on " + Territory.ToString("CN NM (ID) OWN"));
-        UIPopupScript.DisplayIfSatisfy(Territory);
+        var b = UIPopupScript.DisplayIfSatisfy(Territory);
+        Debug.Log("Display is: " + b.ToString());
     }
 
     public override void Startup()

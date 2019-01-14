@@ -13,18 +13,18 @@ public class Continent {
     /// <summary>
     /// Additional armies granted for holding all the Continent's territories at the start of the game
     /// </summary>
-    public readonly int StartedAdded;
+    public readonly int FullControlAddition;
     public List<Territory> Territories = new List<Territory>();
 
     public Continent(string name, int addedAtStart, params Territory[] territories)
     {
         Name = name;
-        StartedAdded = addedAtStart;
+        FullControlAddition = addedAtStart;
         Territories.AddRange(territories);
     }
     public Continent(string name, int addedAtStart)
     {
-        StartedAdded = addedAtStart;
+        FullControlAddition = addedAtStart;
         Name = name;
     }
     public void SetIds()
@@ -88,6 +88,22 @@ public class Continent {
             t1.WhereCanMove.UniqueAdd(t2);
             t2.WhereCanMove.UniqueAdd(t1);
         }
+    }
+
+    public Optional<Player> WhoControlsAll()
+    {
+        List<Player> owners = new List<Player>();
+        foreach(var t in Territories)
+        {
+            if (t.Owner != GameManager.NotOwned)
+            {
+                owners.Add(t.Owner);
+            }
+        }
+        owners = owners.Distinct().ToList();
+        if (owners.Count == 1)
+            return new Optional<Player>(owners[0]);
+        return new Optional<Player>();
     }
 
 	public string Display()

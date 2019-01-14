@@ -8,6 +8,11 @@ public class Army {
     public ArmyType Type;
     public Territory Location;
 
+    public Army(ArmyType type)
+    {
+        Type = type;
+    }
+
 	// Use this for initialization
 	void Start () {
 		

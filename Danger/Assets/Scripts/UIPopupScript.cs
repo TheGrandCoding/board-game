@@ -43,6 +43,7 @@ public class UIPopupScript : MonoBehaviour
 
     public static bool DisplayIfSatisfy(Territory t)
     {
+        Debug.Log($"Clicked {t.Name}, Crit: {Script.Criteria?.DoesSatisfy(t).ToString() ?? "<null>"}");
         if (Script.Criteria == null)
             return false;
         if(Script.Criteria.DoesSatisfy(t))
@@ -65,6 +66,8 @@ public class UIPopupScript : MonoBehaviour
         {
             criteriaText += "\r\nIs owned by " + criteria.MustBeOwnedBy.Value.Name;
         }
+        if (criteriaText == "Click on a territory that:")
+            criteriaText = " Click on any territory";
         Status.text = criteriaText;
         Name.text = "...";
         Continent.text = "...";
