@@ -49,8 +49,8 @@ ModelImporter:
     400040: Sphere_018
     400042: Sphere_019
     400044: Sphere_020
-    2100000: Material
-    2100002: unnamed
+    2100000: Cube_Body
+    2100002: Circle_Side
     2300000: Cube
     2300002: Sphere_000
     2300004: Sphere_001
