@@ -57,37 +57,31 @@ public class TerritoryDisplayCriteria
     {
         if(MustBeInContinent.HasValue)
         {
-            Debug.Log($"{territory.Continent.Name} vs {MustBeInContinent.Value.Name}");
             if (territory.Continent.Name != MustBeInContinent.Value.Name)
                 return false;
         }
         if(MustNOTBeInContinent.HasValue)
         {
-            Debug.Log($"{territory.Continent.Name} n-vs {MustBeInContinent.Value.Name}");
             if (territory.Continent.Name == MustNOTBeInContinent.Value.Name)
                 return false;
         }
         if(MustBeOwnedBy.HasValue)
         {
-            Debug.Log($"{territory.Owner.Name} vs {MustBeOwnedBy.Value.Name}");
             if (territory.Owner.Name != MustBeOwnedBy.Value.Name)
                 return false;
         }
         if(MustNOTBeOwnedBy.HasValue)
         {
-            Debug.Log($"{territory.Owner.Name} n-vs {MustBeOwnedBy.Value.Name}");
             if (territory.Owner.Name == MustNOTBeOwnedBy.Value.Name)
                 return false;
         }
         if(MustHaveAtleastArmies.HasValue && MustHaveAtleastArmies.Value > 0)
         {
-            Debug.Log($"{territory.DefendingArmies.Count} > {MustHaveAtleastArmies.Value}");
             if (territory.DefendingArmies.Count <= MustHaveAtleastArmies.Value)
                 return false;
         }
         if(MustHaveNoMoreThanArmies.HasValue && MustHaveNoMoreThanArmies.Value > 0)
         {
-            Debug.Log($"{territory.DefendingArmies.Count} <= {MustHaveNoMoreThanArmies.Value}");
             if (territory.DefendingArmies.Count > MustHaveNoMoreThanArmies.Value)
                 return false;
         }
