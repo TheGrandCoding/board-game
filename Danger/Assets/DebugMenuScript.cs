@@ -51,7 +51,7 @@ public class DebugMenuScript : MonoBehaviour
     /// Moves an army from one territory to another
     /// </summary>
     public void DebugMoveArmy()
-    {/*
+    {
         UIHelper.RunOnTerritoryConfirmed(new TerritoryDisplayCriteria(ownedBy: GameManager.StartPlayer), (Territory from, TerritoryDisplayCriteria crit, object state) =>
         {
             Debug.Log("Moving armies from " + from.Name);
@@ -65,8 +65,8 @@ public class DebugMenuScript : MonoBehaviour
                 var moving = (MoveStructure)oState;
                 Territory.AttemptOrFailToMove(moving.From, destination);
             }, new MoveStructure() { From = from, Army = army });
-        }, null);*/
-
+        }, null);
+        /*
         var from = GameManager.GetTerritory("Great Britain");
         var to = GameManager.GetTerritory("Ukraine");
         var path = new List<Territory>()
@@ -77,6 +77,6 @@ public class DebugMenuScript : MonoBehaviour
         var couldMove = Territory.CouldMoveArmyThroughPath(new Army(ArmyType.Infantry) { Owner = GameManager.StartPlayer }, from, to, path
             );
         if (couldMove)
-            Debug.Log($"Able to move from {from} to {to} via: {string.Join(" -> ", path)}");
+            Debug.Log($"Able to move from {from} to {to} via: {string.Join(" -> ", path)}");*/
     }
 }

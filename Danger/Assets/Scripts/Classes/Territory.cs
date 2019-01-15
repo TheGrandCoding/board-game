@@ -73,6 +73,7 @@ public class Territory {
 
     static List<Node> allNodes = null;
     static List<Node> unvisited = null;
+    static List<List<Node>> Paths = new List<List<Node>>();
 
     /// <summary>
     /// Returns the next node to go to, or null
@@ -80,17 +81,20 @@ public class Territory {
     /// <param name="current">Current node we are at</param>
     /// <param name="to">Node of destination we are going to</param>
     /// <returns></returns>
-    static Node HandleNode(Node current, Node to)
+    static Node HandleNode(Node current, Node to, List<Node> pastNodes)
     {
         var toConsider = current.Neighbours.Where(x => !x.Visited);
+        var nodesWithThis = new List<Node>();
+        nodesWithThis.AddRange(pastNodes);
+        nodesWithThis.Add(current);
         Debug.Log($"Neighbours of {current.Territory.Name}: {string.Join("\r\n- ", current.Neighbours)}");
         foreach (var neighbour in toConsider)
         {
             int distance = current.Distance;
-            if (neighbour.Distance == int.MaxValue)
+            //if (neighbour.Distance == int.MaxValue)
                 distance += 1;
-            else
-                distance += neighbour.Distance;
+            //else
+            //    distance += neighbour.Distance;
             Debug.Log($"For {current}, on neighbour {neighbour}: {distance} vs {neighbour.Distance}");
             if (neighbour.Distance > distance)
                 neighbour.Distance = distance;
@@ -100,7 +104,12 @@ public class Territory {
 
         if (to.Visited == true)
         {
-            throw new System.Exception("Done!");
+            Paths.Add(nodesWithThis);
+            throw new System.Exception("Done! Path distance: " + nodesWithThis.Count);
+        }
+        foreach(var neighbour in toConsider)
+        {
+            HandleNode(neighbour, to, nodesWithThis);
         }
         Node lowest = null;
         int lowestDistance = int.MaxValue;
@@ -156,22 +165,62 @@ public class Territory {
             node.Neighbours = unvisited.Where(x => node.Territory.WhereCanMove.Contains(x.Territory)).ToList();
         }
 
-        var currentNode = unvisited.FirstOrDefault(x => x.Territory.Name == from.Name);
-        currentNode.Distance = 0;
+        var StartNode = unvisited.FirstOrDefault(x => x.Territory.Name == from.Name);
+        StartNode.Distance = 0;
+        var currentNode = StartNode;
         var destination = unvisited.FirstOrDefault(x => x.Territory.Name == to.Name);
+        unvisited = currentNode.Neighbours;
 
         Debug.Log($"Move {currentNode.Territory.Name} -> {destination.Territory.Name}");
 
-        List<Node> Path = new List<Node>() { currentNode };
-
+        List<Node> topLevelDone = new List<Node>() { currentNode };
+        int attempts = 0;
+        Node nextNode = currentNode;
         do
         {
-            var nextNode = HandleNode(currentNode, destination);
-            Path.Add(nextNode);
-            currentNode = nextNode;
-            Debug.Log($"Next node is {currentNode}, remaining: {unvisited.Count}");
-        } while (currentNode.Territory.Name != to.Name && (unvisited.Count > 1 || unvisited[0].Distance != int.MaxValue));
+            try
+            {
+                nextNode = HandleNode(currentNode, destination, new List<Node>() { currentNode });
+                /*if(nextNode == null || nextNode == destination)
+                {
+                    paths.Add(Path);
+                    nextNode = unvisited.FirstOrDefault(x => x.Visited == false);
+                    Path = new List<Node>()
+                }*/
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning(ex);
+            } finally
+            {
+                attempts++;
+                Debug.Log($"#{attempts} TLD: " + string.Join(", ", topLevelDone));
+                unvisited = unvisited.Where(x => topLevelDone.Contains(x) == false).ToList();
+                Debug.Log($"TLD Returned: {nextNode} -- TLD contains: {string.Join(", ", topLevelDone)}");
+                bool continue_ = true;
+                if (topLevelDone.Contains(nextNode))
+                {
+                    var whereNotVistedOrContains = StartNode.Neighbours.Where(x => !topLevelDone.Contains(x));
+                    if (whereNotVistedOrContains.Count() == 0)
+                        continue_ = false;
+                    else
+                        nextNode = RandomGens.RndHelp.Choose<Node>(whereNotVistedOrContains);
+                }
+                if(continue_)
+                {
+                    topLevelDone.Add(nextNode);
+                    currentNode = nextNode;
+                    Debug.Log($"Next node is {currentNode}, remaining: {unvisited.Count}");
+                }
+            }
+        } while (currentNode.Territory.Name != to.Name && unvisited.Count != 0 && ( unvisited.Count > 1 || unvisited[0].Distance != int.MaxValue) && attempts <= 10);
 
-        return Path.LastOrDefault().Territory.Name == to.Name;
+        Debug.LogWarning("DONE ALL CALCULATIONS! - Paths as follows:");
+        foreach(var path in Paths)
+        {
+            Debug.Log($"{path.Count}: {string.Join(" -> ", path)}");
+        }
+
+        return true;
     }
 }

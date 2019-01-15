@@ -84,7 +84,6 @@ public class GameManager : MonoBehaviour {
             new Territory("Central America", northAmerica),
             new Territory("Eastern US", northAmerica),
             new Territory("Greenland", northAmerica),
-            new Territory("Central America", northAmerica),
             new Territory("Northwest Territory", northAmerica),
             new Territory("Ontario", northAmerica),
             new Territory("Quebec", northAmerica),
@@ -176,7 +175,7 @@ public class GameManager : MonoBehaviour {
         NorthAmerica.AllMove(3, 9, 4);
         NorthAmerica.AllMove(4, 3, 9, 7, 8);
         NorthAmerica.AllMove(5, 6, 7, 8);
-        NorthAmerica.AllMove(6, 1, 2, 7, 5);
+        NorthAmerica.AllMove(6, 1, 2, 7);
         NorthAmerica.AllMove(7, 6, 2, 9, 4, 5);
         NorthAmerica.AllMove(8, 6, 7, 5, 4);
         NorthAmerica.AllMove(9, 2, 7, 4, 3);
