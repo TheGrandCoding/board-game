@@ -63,7 +63,7 @@ public class DebugMenuScript : MonoBehaviour
             {
                 Debug.Log("Moving to " + destination.Name);
                 var moving = (MoveStructure)oState;
-                Territory.AttemptOrFailToMove(moving.From, destination);
+                Territory.AttemptOrFailToMove(GameManager.StartPlayer, moving.From, destination);
             }, new MoveStructure() { From = from, Army = army });
         }, null);
         /*

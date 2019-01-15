@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Extensions;
 
 public class Territory {
 
@@ -51,176 +52,173 @@ public class Territory {
         return this.ToString("CN NM");
     }
 
+
+    class LinkedNode : Node
+    {
+        public LinkedNode Parent;
+        public List<LinkedNode> LinkedNeighbours
+        {
+            get
+            {
+                List<LinkedNode> toBe = new List<LinkedNode>();
+                foreach(var node in Neighbours)
+                {
+                    if (node.Territory == Parent?.Territory)
+                        continue;
+                    toBe.Add(node.ToLinked(this));
+                }
+                return toBe;
+                //Neighbours.Select(x => x.ToLinked(this)).ToList();
+            }
+        }
+        public LinkedNode(Node node, LinkedNode parent) : base(node.Territory)
+        {
+            Parent = parent;
+        }
+
+        public List<LinkedNode> GetNodes(int depth, Player owner = null)
+        {
+            if (this == null)
+                Debug.LogWarning($"this null");
+            if (this.Territory == null)
+                Debug.LogWarning($"this territory null");
+            if (this.Neighbours == null)
+                Debug.LogWarning($"{this.Territory.Name} this neighbours null");
+            Debug.Log($"{this.Territory.Name} - {string.Join(", ", this.Neighbours)}");
+            List<LinkedNode> nodes = new List<LinkedNode>();
+            if (owner != null && this.Territory.Owner != owner)
+                return nodes; // since they cant pass here anyway, dont even bother to try.
+            if (depth == 0)
+            {
+                visited.UniqueAdd(this);
+                Debug.Log($"D{depth} returning neighbours of {this.Territory.Name}: {string.Join(", ", this.Neighbours)}");
+                nodes = LinkedNeighbours.ToList();
+            }
+            else
+            {
+                Debug.Log($"D{depth} returning depth below of {this.Territory.Name} neighbours: {string.Join(", ", this.Neighbours)}");
+                foreach (var n in LinkedNeighbours)
+                {
+                    nodes.AddRange(n.GetNodes(depth - 1));
+                }
+            }
+            return nodes;
+        }
+
+        public List<LinkedNode> GetParents()
+        {
+            var list = new List<LinkedNode>();
+            if(Parent != null)
+                list.AddRange(Parent.GetParents());
+            list.Add(this);
+            return list;
+        }
+    }
+
     // Some statics
     class Node
     {
         public Territory Territory;
         public List<Node> Neighbours;
-        public int Distance;
-        public bool Visited;
         public Node(Territory t)
         {
             Territory = t;
-            Distance = int.MaxValue;
-            Visited = false;
+        }
+
+        public LinkedNode ToLinked(LinkedNode parent)
+        {
+            var ll = new LinkedNode(this, parent);
+            ll.Neighbours = allNodes.Where(x => ll.Territory.WhereCanMove.Contains(x.Territory)).ToList();
+            return ll;
         }
 
         public override string ToString()
         {
-            return $"{Territory.Name} {Visited} {Distance}";
+            return $"{Territory.Name}";
         }
     }
 
     static List<Node> allNodes = null;
-    static List<Node> unvisited = null;
+    static List<LinkedNode> visited = null;
     static List<List<Node>> Paths = new List<List<Node>>();
 
-    /// <summary>
-    /// Returns the next node to go to, or null
-    /// </summary>
-    /// <param name="current">Current node we are at</param>
-    /// <param name="to">Node of destination we are going to</param>
-    /// <returns></returns>
-    static Node HandleNode(Node current, Node to, List<Node> pastNodes)
+    static bool CouldMoveArmyThroughPath(Player owner, Territory from, Territory to,  List<LinkedNode> path)
     {
-        var toConsider = current.Neighbours.Where(x => !x.Visited);
-        var nodesWithThis = new List<Node>();
-        nodesWithThis.AddRange(pastNodes);
-        nodesWithThis.Add(current);
-        Debug.Log($"Neighbours of {current.Territory.Name}: {string.Join("\r\n- ", current.Neighbours)}");
-        foreach (var neighbour in toConsider)
-        {
-            int distance = current.Distance;
-            //if (neighbour.Distance == int.MaxValue)
-                distance += 1;
-            //else
-            //    distance += neighbour.Distance;
-            Debug.Log($"For {current}, on neighbour {neighbour}: {distance} vs {neighbour.Distance}");
-            if (neighbour.Distance > distance)
-                neighbour.Distance = distance;
-        }
-        current.Visited = true;
-        unvisited.Remove(current);
-
-        if (to.Visited == true)
-        {
-            Paths.Add(nodesWithThis);
-            throw new System.Exception("Done! Path distance: " + nodesWithThis.Count);
-        }
-        foreach(var neighbour in toConsider)
-        {
-            HandleNode(neighbour, to, nodesWithThis);
-        }
-        Node lowest = null;
-        int lowestDistance = int.MaxValue;
-        foreach (var nodes in toConsider)
-        {
-            if (nodes.Distance < lowestDistance)
-            {
-                lowest = nodes;
-                lowestDistance = nodes.Distance;
-            }
-        }
-        Debug.Log($"For {current}, returning {lowest}");
-        return lowest;
-    }
-
-    public static bool CouldMoveArmyThroughPath(Army army, Territory from, Territory to,  List<Territory> path)
-    {
-        var owner = army.Owner;
         for(int index =0; index < path.Count; index++)
         {
             var t = path.ElementAtOrDefault(index);
-            if (t == null || t == to)
+            if (t == null || t.Territory == to)
                 break;
-            if (index == 0 && t.Name != from.Name)
+            if (index == 0 && t.Territory.Name != from.Name)
                 throw new InvalidOperationException("First territory in 'path' variable is expected to match 'from' variable");
-            if (index == path.Count - 1 && t.Name != to.Name)
+            if (index == path.Count - 1 && t.Territory.Name != to.Name)
                 throw new InvalidOperationException("Last territory in 'path' variable is expected to match 'to' variable");
             var next = path.ElementAtOrDefault(index + 1);
-            if (next == null && t.Name != to.Name)
+            if (next == null && t.Territory.Name != to.Name)
                 throw new InvalidOperationException("Path ends before it reaches 'to' territory - path never connects to it");
-            if (!t.WhereCanMove.Contains(next))
+            if (!t.Territory.WhereCanMove.Contains(next.Territory))
                 throw new InvalidOperationException($"Cannot move from {t} to {next} in path (no connection)");
-            if(t.Owner != next.Owner)
+            if(t.Territory.Owner != next.Territory.Owner)
                 throw new InvalidOperationException($"Cannot move from {t} to {next} in path (owners different)");
-            if(t.Owner != owner)
+            if(t.Territory.Owner != owner)
                 throw new InvalidOperationException($"Cannot move from {t} to {next} in path (army owner different)");
         }
         return true;
     }
 
-    public static bool AttemptOrFailToMove(Territory from, Territory to)
-    { // This doesn't work! Attempted to implement https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm but couldn't
-        unvisited = new List<Node>();
+    public static bool AttemptOrFailToMove(Player owner, Territory from, Territory to)
+    { // Function uses the https://en.wikipedia.org/wiki/Breadth-first_search algorithm to search
+        visited = new List<LinkedNode>();
         allNodes = new List<Node>();
         foreach (var t in GameManager.Territories)
         {
             var nNode = new Node(t);
-            unvisited.Add(nNode);
             allNodes.Add(nNode);
         }
-        foreach (var node in unvisited)
+        foreach (var node in allNodes)
         {
-            node.Neighbours = unvisited.Where(x => node.Territory.WhereCanMove.Contains(x.Territory)).ToList();
+            node.Neighbours = allNodes.Where(x => node.Territory.WhereCanMove.Contains(x.Territory)).ToList();
+            Debug.Log($"{node.Territory.Name}: {string.Join(", ", node.Neighbours)}");
         }
 
-        var StartNode = unvisited.FirstOrDefault(x => x.Territory.Name == from.Name);
-        StartNode.Distance = 0;
-        var currentNode = StartNode;
-        var destination = unvisited.FirstOrDefault(x => x.Territory.Name == to.Name);
-        unvisited = currentNode.Neighbours;
+        var StartNode = allNodes.FirstOrDefault(x => x.Territory.Name == from.Name);
+        var StartLinked = StartNode.ToLinked(null);
+        var destination = allNodes.FirstOrDefault(x => x.Territory.Name == to.Name);
 
-        Debug.Log($"Move {currentNode.Territory.Name} -> {destination.Territory.Name}");
-
-        List<Node> topLevelDone = new List<Node>() { currentNode };
-        int attempts = 0;
-        Node nextNode = currentNode;
+        LinkedNode doneWith = null;
+        int lastVisitedCount = visited.Count;
+        int depth = -1;
+        int limitDepth = 10;
         do
         {
-            try
+            depth++;
+            lastVisitedCount = visited.Count;
+            Debug.Log($"-{depth}: {StartLinked.Territory.Name} {string.Join(", ", StartLinked.Neighbours)} ");
+            var lookingAt = StartLinked.GetNodes(depth);
+            foreach (var node in lookingAt)
             {
-                nextNode = HandleNode(currentNode, destination, new List<Node>() { currentNode });
-                /*if(nextNode == null || nextNode == destination)
+                Debug.Log($"#{depth}: {string.Join(" -> ", node.GetParents())}");
+                visited.Add(node);
+                if(node.Territory.Name == to.Name)
                 {
-                    paths.Add(Path);
-                    nextNode = unvisited.FirstOrDefault(x => x.Visited == false);
-                    Path = new List<Node>()
-                }*/
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning(ex);
-            } finally
-            {
-                attempts++;
-                Debug.Log($"#{attempts} TLD: " + string.Join(", ", topLevelDone));
-                unvisited = unvisited.Where(x => topLevelDone.Contains(x) == false).ToList();
-                Debug.Log($"TLD Returned: {nextNode} -- TLD contains: {string.Join(", ", topLevelDone)}");
-                bool continue_ = true;
-                if (topLevelDone.Contains(nextNode))
-                {
-                    var whereNotVistedOrContains = StartNode.Neighbours.Where(x => !topLevelDone.Contains(x));
-                    if (whereNotVistedOrContains.Count() == 0)
-                        continue_ = false;
-                    else
-                        nextNode = RandomGens.RndHelp.Choose<Node>(whereNotVistedOrContains);
-                }
-                if(continue_)
-                {
-                    topLevelDone.Add(nextNode);
-                    currentNode = nextNode;
-                    Debug.Log($"Next node is {currentNode}, remaining: {unvisited.Count}");
+                    try
+                    {
+                        if(CouldMoveArmyThroughPath(owner, from, to, node.GetParents()))
+                        {
+                            Debug.LogWarning("Done! With above.");
+                            doneWith = node;
+                            break;
+                        }
+                    } catch (InvalidOperationException ex)
+                    {
+                        Debug.LogWarning("Considered the above, but unable to because: " + ex.Message);
+                        limitDepth = depth + 3; // since we are around the target, we'll allow just three must varities to get there
+                        // then we'll call it quits and say its not possible
+                    }
                 }
             }
-        } while (currentNode.Territory.Name != to.Name && unvisited.Count != 0 && ( unvisited.Count > 1 || unvisited[0].Distance != int.MaxValue) && attempts <= 10);
-
-        Debug.LogWarning("DONE ALL CALCULATIONS! - Paths as follows:");
-        foreach(var path in Paths)
-        {
-            Debug.Log($"{path.Count}: {string.Join(" -> ", path)}");
-        }
-
-        return true;
+            limitDepth--;
+        } while (visited.Count > lastVisitedCount && doneWith == null && limitDepth > depth);
+        return doneWith != null;
     }
 }
