@@ -5,9 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitcher : MonoBehaviour
 {
-    public int scene; //manually input which scene to go to
 
-    void OnMouseDown()
+    public void changescene(int scene)
     {
         SceneManager.LoadScene(scene);
     }
