@@ -358,8 +358,7 @@ public class GameManager : MonoBehaviour {
         if (p.CapitalCity == null)
         {
             Debug.Log("Setting capital of " + p.Name + " to " + capital.ToString());
-            p.CapitalCity = capital;
-            capital.Owner = p;
+            capital.SetOwner(p);
         } else
         {
             Debug.LogWarning(string.Format("Attempted to set {0}'s capital to {1}, but it was already set as {2}", p.Name, capital.Name, p.CapitalCity.Name));
@@ -380,7 +379,7 @@ public class GameManager : MonoBehaviour {
             {
                 var terr = remaining.First();
                 remaining.RemoveAt(0);
-                terr.Owner = player;
+                terr.SetOwner(player);
             }
             remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
         }
