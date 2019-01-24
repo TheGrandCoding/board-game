@@ -13,7 +13,7 @@ public class DebugMenuScript : MonoBehaviour
         {
             Player owner = (Player)state;
             Debug.Log($"Setting owner of {t.Name} to {owner.Name}");
-            t.Owner = owner;
+            t.SetOwner(owner);
         }, GameManager.StartPlayer);
     }
 
@@ -24,7 +24,7 @@ public class DebugMenuScript : MonoBehaviour
             Debug.Log($"Setting {(Player)state} to control all of {t.Continent.Name}");
             foreach(var terr in t.Continent.Territories)
             {
-                terr.Owner = (Player)state;
+                terr.SetOwner((Player)state);
             }
         }, GameManager.StartPlayer);
     }
