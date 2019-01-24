@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Extensions;
+using UnityEngine.UI;
 
 public class Territory {
 
@@ -11,6 +12,11 @@ public class Territory {
     public readonly Continent Continent;
     public int ID;
     public List<Territory> WhereCanMove = new List<Territory>();
+    public Image Image;
+    public Color ModColor {  get
+        {
+            return Owner.PlayerColor;
+        } }
 
     public Territory(string name, Continent continent)
     {
@@ -18,7 +24,24 @@ public class Territory {
         Continent = continent;
     }
 
-    public Player Owner = GameManager.NotOwned; // default is Neutral until it is later claimed
+    public void SetOwner(Player newOwner)
+    {
+        try
+        {
+            newOwner = newOwner ?? GameManager.NotOwned;
+            Owner = newOwner;
+            if (Image == null)
+                Debug.LogWarning(this.ToString() + ": Image null");
+            if (ModColor == null)
+                Debug.LogWarning(this.ToString() + ": ModColor null");
+            Image.color = ModColor;
+        } catch (Exception ex)
+        {
+            Debug.LogError("Errored in " + this.ToString() + ", ex: " + ex.ToString());
+        }
+    }
+
+    public Player Owner { get; private set; } = GameManager.NotOwned; // default is Neutral until it is later claimed
 
     public List<Army> DefendingArmies = new List<Army>();
     public List<Army> AttackingArmies = new List<Army>();

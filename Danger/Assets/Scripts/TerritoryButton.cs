@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Image))] 
 public class TerritoryButton : ImageButton {
 
     public string Name;
@@ -33,6 +35,11 @@ public class TerritoryButton : ImageButton {
         if (Territory == null)
         {
             Debug.LogError("No territory for gameobject " + this.name);
+        } else
+        {
+            Territory.Image = this.GetComponent<Image>();
+            if (Territory.Image == null)
+                Debug.LogError("TerritoryButton must have an Image attached to same gameobject");
         }
     }
 }

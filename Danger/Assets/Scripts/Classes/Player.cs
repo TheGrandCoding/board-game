@@ -70,8 +70,28 @@ public class Player {
         return Name;
     }
 
-    // Use this for initialization
-    void Start () {
+    public Color PlayerColor {  get
+        {
+            switch (ChoiceIndex) {
+                case 0:
+                    return Color.blue;
+                case 1:
+                    return Color.red;
+                case 2:
+                    return Color.yellow;
+                case 3:
+                    return Color.cyan;
+                case 4:
+                    return Color.magenta;
+                case 5:
+                    return Color.green;
+                default:
+                    return Color.grey;
+            }
+        } }
+
+	// Use this for initialization
+	void Start () {
 		
 	}
 	
