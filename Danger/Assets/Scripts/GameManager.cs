@@ -22,6 +22,53 @@ public class GameManager : MonoBehaviour {
     public static Player NotOwned = new Player("Neutral");
 
     public static Player StartPlayer;
+    public static Player CurrentPlayer;
+    public static Player NextPlayer {  get
+        {
+            var curIndex = CurrentPlayer.ChoiceIndex + 1;
+            if(curIndex >= Players.Count)
+            {
+                // went round.
+                return Players[0];
+            }
+            return Players[curIndex];
+        } }
+    public static GameStage CurrentStage;
+    public static GameStage NextStage {  get
+        {
+            switch(CurrentStage)
+            {
+                case GameStage.First:
+                    return GameStage.Attack;
+                case GameStage.Attack:
+                    return GameStage.Movement;
+                default:
+                    return GameStage.First;
+            }
+        } }
+
+
+    public static void SwitchToNextPlayer()
+    {
+        CurrentStage = NextStage;
+        if(NextPlayer.ChoiceIndex == 0)
+        {
+            // a full 'turn' has taken place, so..
+            CurrentPlayer = NextPlayer;
+            StartNextTurn(); // we run logic to deal with new armies etc.
+        } else
+        {
+            CurrentPlayer = NextPlayer;
+            Debug.Log("Moving next turn, now: " + CurrentPlayer.Name);
+        }
+        UIScript.UpdateUI();
+    }
+
+    public static void StartNextTurn()
+    {
+        Debug.Log("Starting entire next turn.");
+        UIScript.UpdateUI();
+    }
 
     public class ReadyEventArgs : System.EventArgs
     {
@@ -324,6 +371,7 @@ public class GameManager : MonoBehaviour {
         }
 
         StartPlayer = highestPlayer;
+        CurrentStage = GameStage.First;
         int startIndex = Players.IndexOf(StartPlayer);
         int newIndexOfPlayers = 0;
         while (newIndexOfPlayers < Players.Count)
@@ -336,6 +384,7 @@ public class GameManager : MonoBehaviour {
                 startIndex = 0;
         }
         Players = Players.OrderBy(x => x.ChoiceIndex).ToList();
+        CurrentPlayer = StartPlayer;
         Debug.Log("Start player: " + highestPlayer.Name);
 
     }
@@ -383,6 +432,7 @@ public class GameManager : MonoBehaviour {
             }
             remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
         }
+        UIScript.UpdateUI();
     }
 
     private static void Start_SelectCapitals()
