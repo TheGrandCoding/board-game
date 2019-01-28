@@ -16,9 +16,10 @@ public class UIScript : DangerGameObject
     // Main game UI
     public Text PlayerName;
     public Text UnitsRemain;
+    public Text TerritoriesNum;
     public Button StartStage;
     public Button AttackStage;
-    public Button RewardStage;
+    public Button RelocateStage;
     public static bool Started;
 
     static Player Current => GameManager.CurrentPlayer;
@@ -68,10 +69,11 @@ public class UIScript : DangerGameObject
         if(Started)
         {
             instance.PlayerName.text = Current.Name;
-            instance.UnitsRemain.text = "-1";
+            instance.UnitsRemain.text = "Units: " + Current.ArmiesToGive.Count.ToString();
+            instance.TerritoriesNum.text = "Terr: " +  Current.Territories.Count.ToString();
             HighlightButton(instance.StartStage, GameStage.First);
             HighlightButton(instance.AttackStage, GameStage.Attack);
-            HighlightButton(instance.RewardStage, GameStage.Movement);
+            HighlightButton(instance.RelocateStage, GameStage.Movement);
         }
     }
 }
