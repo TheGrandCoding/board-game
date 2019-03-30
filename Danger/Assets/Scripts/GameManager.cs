@@ -405,6 +405,8 @@ public class GameManager : MonoBehaviour {
     {
         if (p.CapitalCity == null)
         {
+            Debug.Log(p.Name);
+            Debug.Log(capital.Name);
             Debug.Log("Setting capital of " + p.Name + " to " + capital.ToString());
             capital.SetOwner(p);
         } else
@@ -425,6 +427,8 @@ public class GameManager : MonoBehaviour {
         {
             foreach (var player in Players)
             {
+                if (remaining.Count == 0)
+                    continue;
                 var terr = remaining.First();
                 remaining.RemoveAt(0);
                 terr.SetOwner(player);
@@ -437,7 +441,7 @@ public class GameManager : MonoBehaviour {
     private static void Start_SelectCapitals()
     {
         var p1 = Players[0];
-        UIHelper.RunOnTerritoryConfirmed(
+        UIHelper.SelectTerritory(
             new TerritoryDisplayCriteria(ownedBy:NotOwned),
             playerConfirmedTerritory, p1);
 
@@ -446,6 +450,8 @@ public class GameManager : MonoBehaviour {
     private static void playerConfirmedTerritory(Territory t, TerritoryDisplayCriteria c, object state)
     {
         var player = (Player)state;
+        Debug.Log(player.Name);
+        Debug.Log(t.Name);
         Start_SetCapital(player, t);
         var nextid = player.ChoiceIndex + 1;
         var nextPlayer = Players.ElementAtOrDefault(nextid);
@@ -455,7 +461,7 @@ public class GameManager : MonoBehaviour {
             Start_RandomiseRemainingTerritories();
         } else
         {
-            UIHelper.RunOnTerritoryConfirmed(
+            UIHelper.SelectTerritory(
                 new TerritoryDisplayCriteria(ownedBy: NotOwned),
                 playerConfirmedTerritory, nextPlayer);
         }

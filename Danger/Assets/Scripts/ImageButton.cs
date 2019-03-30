@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class ImageButton : DangerGameObject, IPointerClickHandler
+public abstract class ImageButton : DangerGameObject, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
 	
     public void OnPointerClick(PointerEventData eventData)
@@ -17,4 +17,17 @@ public abstract class ImageButton : DangerGameObject, IPointerClickHandler
 
     public abstract void Clicked();
 
+    public abstract void MouseOver();
+
+    public abstract void MouseExit();
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        MouseOver();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        MouseExit();
+    }
 }

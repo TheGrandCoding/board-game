@@ -23,7 +23,18 @@ public class TerritoryButton : ImageButton {
     public override void Clicked()
     {
         Debug.Log("Clicked on " + Territory.ToString("CN NM (ID) OWN"));
-        var b = UIPopupScript.DisplayIfSatisfy(Territory);
+        UITerritoryDisplay.DisplayOnClick(Territory);
+        UIHelper.TerritoryClicked(Territory);
+    }
+
+    public override void MouseExit()
+    {
+        UITerritoryDisplay.Display(null); // remove it
+    }
+
+    public override void MouseOver()
+    {
+        UITerritoryDisplay.Display(Territory);
     }
 
     public override void Startup()

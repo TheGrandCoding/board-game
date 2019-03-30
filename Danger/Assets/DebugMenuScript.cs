@@ -9,7 +9,7 @@ public class DebugMenuScript : MonoBehaviour
     /// </summary>
     public void ClickToControl()
     {
-        UIHelper.RunOnTerritoryConfirmed(new TerritoryDisplayCriteria(), (Territory t, TerritoryDisplayCriteria crit, object state) =>
+        UIHelper.SelectTerritory(new TerritoryDisplayCriteria(), (Territory t, TerritoryDisplayCriteria crit, object state) =>
         {
             Player owner = (Player)state;
             Debug.Log($"Setting owner of {t.Name} to {owner.Name}");
@@ -19,7 +19,7 @@ public class DebugMenuScript : MonoBehaviour
 
     public void ClickToControlAllContinent()
     {
-        UIHelper.RunOnTerritoryConfirmed(new TerritoryDisplayCriteria(), (Territory t, TerritoryDisplayCriteria crit, object state) =>
+        UIHelper.SelectTerritory(new TerritoryDisplayCriteria(), (Territory t, TerritoryDisplayCriteria crit, object state) =>
         {
             Debug.Log($"Setting {(Player)state} to control all of {t.Continent.Name}");
             foreach(var terr in t.Continent.Territories)
@@ -52,18 +52,23 @@ public class DebugMenuScript : MonoBehaviour
     /// </summary>
     public void DebugMoveArmy()
     {
-        UIHelper.RunOnTerritoryConfirmed(new TerritoryDisplayCriteria(ownedBy: GameManager.StartPlayer), (Territory from, TerritoryDisplayCriteria crit, object state) =>
+        UIHelper.SelectTerritory(new TerritoryDisplayCriteria(ownedBy: GameManager.StartPlayer), (Territory from, TerritoryDisplayCriteria crit, object state) =>
         {
             Debug.Log("Moving armies from " + from.Name);
             if (from.DefendingArmies == null || from.DefendingArmies.Count == 0)
             from.DefendingArmies = new List<Army>() { new Army(ArmyType.Infantry) };
             var army = from.DefendingArmies[0];
 
-            UIHelper.RunOnTerritoryConfirmed(new TerritoryDisplayCriteria(ownedBy: GameManager.StartPlayer), (Territory destination, TerritoryDisplayCriteria criteria, object oState) =>
+            UIHelper.SelectTerritory(new TerritoryDisplayCriteria(ownedBy: GameManager.StartPlayer), (Territory destination, TerritoryDisplayCriteria criteria, object oState) =>
             {
                 Debug.Log("Moving to " + destination.Name);
                 var moving = (MoveStructure)oState;
-                Territory.AttemptOrFailToMove(GameManager.StartPlayer, moving.From, destination);
+                bool success = Territory.AttemptOrFailToMove(GameManager.StartPlayer, moving.From, destination);
+                if(success)
+                {
+                    moving.From.DefendingArmies.Remove(moving.Army);
+                    destination.DefendingArmies.Add(moving.Army);
+                }
             }, new MoveStructure() { From = from, Army = army });
         }, null);
         /*

@@ -46,6 +46,23 @@ public class Territory {
     public List<Army> DefendingArmies = new List<Army>();
     public List<Army> AttackingArmies = new List<Army>();
 
+    // Cache/store some information to prevent endless repeating of the above.
+    public int NumInfantry = 0;
+    public int NumCavalery = 0;
+    public int NumArtillery = 0;
+    public int TotalDefendingArmies => NumInfantry + NumArtillery + NumCavalery;
+
+    public void AddArmy(Army toAdd)
+    {
+        DefendingArmies.Add(toAdd);
+        if (toAdd.Type == ArmyType.Artillery)
+            NumArtillery++;
+        else if (toAdd.Type == ArmyType.Cavalry)
+            NumCavalery++;
+        else if (toAdd.Type == ArmyType.Infantry)
+            NumInfantry++;
+    }
+
     public string Display(bool displayWhereCanMove = false)
     {
         string where = "";
@@ -191,6 +208,10 @@ public class Territory {
 
     public static bool AttemptOrFailToMove(Player owner, Territory from, Territory to)
     { // Function uses the https://en.wikipedia.org/wiki/Breadth-first_search algorithm to search
+
+        if (from.TotalDefendingArmies == 1)
+            return false; // Unable to cause a territory to be undefended, so refuse.
+
         visited = new List<LinkedNode>();
         allNodes = new List<Node>();
         foreach (var t in GameManager.Territories)
