@@ -33,6 +33,10 @@ public class TerritorySelectPopup : BaseUIPopup
         {
             criteriaText += "\r\nIs owned by " + Criteria.MustBeOwnedBy.Value.Name;
         }
+        if(Criteria.MoveableFromTerritory.HasValue)
+        {
+            criteriaText += $"\r\nAccessible from {Criteria.MoveableFromTerritory.Value.Name}";
+        }
         if (criteriaText == "Click on a territory that:")
             criteriaText = " Click on any territory";
         Status.text = criteriaText;

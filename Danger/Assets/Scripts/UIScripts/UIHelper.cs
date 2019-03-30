@@ -21,7 +21,7 @@ public class UIHelper : MonoBehaviour
         CurrentCriteria = null;
         CurrentPopUp.IsDisplayed = false;
         Debug.Log(t.Name);
-        CurrentAction.Invoke(t, CurrentCriteria, SavedObject);
+        CurrentAction.Invoke(t, CurrentCriteria, CurrentPopUp.SavedObject);
     }
 
     public static void SelectTerritory(TerritoryDisplayCriteria criteria, Action<Territory, TerritoryDisplayCriteria, object> function, object passedParam = null)
@@ -34,6 +34,7 @@ public class UIHelper : MonoBehaviour
         SavedObject = passedParam;
         CurrentCriteria = criteria;
         CurrentPopUp = instance.TerritorySelect;
+        CurrentPopUp.SavedObject = SavedObject;
         CurrentPopUp.SetCriteria(criteria);
         CurrentPopUp.IsDisplayed = true;
     }
@@ -48,6 +49,7 @@ public class UIHelper : MonoBehaviour
         SavedObject = passedParam;
         CurrentCriteria = criteria;
         CurrentPopUp = instance.MoveArmy;
+        CurrentPopUp.SavedObject = SavedObject;
         CurrentPopUp.SetCriteria(criteria);
         CurrentPopUp.IsDisplayed = true;
     }

@@ -63,6 +63,22 @@ public class Territory {
             NumInfantry++;
     }
 
+    private void updateInternal()
+    {
+        NumInfantry = DefendingArmies.Where(x => x.Type == ArmyType.Infantry).Count();
+        NumCavalery = DefendingArmies.Where(x => x.Type == ArmyType.Cavalry).Count();
+        NumArtillery = DefendingArmies.Where(x => x.Type == ArmyType.Artillery).Count();
+    }
+
+    public Army RemoveArmy(ArmyType type = ArmyType.NotSet)
+    {
+        var army = DefendingArmies.FirstOrDefault(x => type == ArmyType.NotSet || x.Type == type);
+        if(army != null)
+            DefendingArmies.Remove(army);
+        updateInternal();
+        return army;
+    }
+
     public string Display(bool displayWhereCanMove = false)
     {
         string where = "";
@@ -232,9 +248,11 @@ public class Territory {
         LinkedNode doneWith = null;
         int lastVisitedCount = visited.Count;
         int depth = -1;
-        int limitDepth = 10;
+        int limitDepth = 3;
+        int RAW_MAX_AMOUNTS = 0; // final last ditch effort to break out of loop if all else fails
         do
         {
+            RAW_MAX_AMOUNTS++;
             depth++;
             lastVisitedCount = visited.Count;
             Debug.Log($"-{depth}: {StartLinked.Territory.Name} {string.Join(", ", StartLinked.Neighbours)} ");
@@ -258,11 +276,13 @@ public class Territory {
                         Debug.LogWarning("Considered the above, but unable to because: " + ex.Message);
                         limitDepth = depth + 3; // since we are around the target, we'll allow just three must varities to get there
                         // then we'll call it quits and say its not possible
+                        if (limitDepth > 6)
+                            limitDepth = 6; // prevent waaay over
                     }
                 }
             }
             limitDepth--;
-        } while (visited.Count > lastVisitedCount && doneWith == null && limitDepth > depth);
+        } while (visited.Count > lastVisitedCount && doneWith == null && limitDepth > depth && RAW_MAX_AMOUNTS < 20);
         return doneWith != null;
     }
 }

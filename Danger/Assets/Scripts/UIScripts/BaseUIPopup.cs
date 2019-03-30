@@ -10,6 +10,10 @@ public abstract class BaseUIPopup : MonoBehaviour
 {
     public Territory Context;
     public TerritoryDisplayCriteria Criteria;
+
+    public object SavedObject; // persistent object, perhaps to allow for remembering of what it actually is
+    // or for the popup to give arguments back to the callback function
+
     public bool IsDisplayed
     {
         get
@@ -28,8 +32,11 @@ public abstract class BaseUIPopup : MonoBehaviour
     /// </summary>
     public void ClickConfirm()
     {
+        PriorConfirm();
         UIHelper.ConfirmedSoRunTask(Context);
     }
+
+    public virtual void PriorConfirm() { }
 
     public abstract void Display(Territory t);
 

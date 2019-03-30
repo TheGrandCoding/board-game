@@ -35,10 +35,38 @@ public class UITerritoryDisplay : MonoBehaviour
 
     public void MoveButtonClicked()
     {
-        UIHelper.SelecyArmyAmount(new TerritoryDisplayCriteria(ownedBy: Territory.Owner), (Territory T, TerritoryDisplayCriteria crit, object callback) =>
+        UIHelper.SelecyArmyAmount(new TerritoryDisplayCriteria(ownedBy: Territory.Owner), (Territory from, TerritoryDisplayCriteria crit, object callback) =>
          {
              // TODO: implement
+             SelectArmyPopup.ArmySelectionDetails details = (SelectArmyPopup.ArmySelectionDetails)callback;
+             Debug.Log($"{details.InfAmount} & {details.CavAmount} & {details.ArtAmount} moving from {this.Territory.Name} ({from.Name})");
 
+             // now we need to select where to move them.
+             UIHelper.SelectTerritory(new TerritoryDisplayCriteria(ownedBy: Territory.Owner, mustBeMoveableFrom:from), (Territory terr, TerritoryDisplayCriteria criter, object obj) =>
+             {
+                 // move things.
+                 Debug.Log($"Moving to " + terr.Name);
+                 List<Army> armiesToMove = new List<Army>();
+                 for(int i = 0; i < details.InfAmount; i++)
+                 {
+                     var army = from.RemoveArmy(ArmyType.Infantry);
+                     armiesToMove.Add(army);
+                 }
+                 for (int i = 0; i < details.CavAmount; i++)
+                 {
+                     var army = from.RemoveArmy(ArmyType.Cavalry);
+                     armiesToMove.Add(army);
+                 }
+                 for (int i = 0; i < details.ArtAmount; i++)
+                 {
+                     var army = from.RemoveArmy(ArmyType.Artillery);
+                     armiesToMove.Add(army);
+                 }
+                 foreach(var army in armiesToMove)
+                 {
+                     terr.AddArmy(army);
+                 }
+             }, details);
          }, null);
     }
 
