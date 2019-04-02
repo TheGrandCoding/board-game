@@ -106,7 +106,7 @@ public class UITerritoryDisplay : MonoBehaviour
         if (Territory == null)
         {
             // no territory, so we hide the display (move off screen)
-            Transform.localPosition = OriginalPosition + new Vector3(0, Transform.sizeDelta.y);
+            Transform.localPosition = OriginalPosition + new Vector3(0, OriginalPosition.y * 2);
         }
         else
         {
