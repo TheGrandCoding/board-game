@@ -78,7 +78,7 @@ public class PlayerManager : MonoBehaviour {
             newObj.name = "Input#" + pNum.ToString();
             var playerInput = newObj.AddComponent<PlayerInput>();
             playerInput.Init(pNum);
-            newObj.transform.localPosition = new Vector3(3, 70 - (35 * pNum));
+            newObj.transform.localPosition = new Vector3(3, gameObject.GetComponent<RectTransform>().position.y - 75 - (35 * pNum));
             AwaitingInput.Add(playerInput);
         }
     }

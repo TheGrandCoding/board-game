@@ -58,10 +58,23 @@ public class Optional<T>
         }
         return false;
     }
-    public static bool operator !=(Optional<T> left, Optional<T> right)
+    public static bool operator ==(T left, Optional<T> right)
     {
-        return !(left == right);
+        if(right.HasValue)
+        {
+            return right.Equals(left);
+        }
+        return false;
     }
+    public static bool operator ==(Optional<T> left, T right)
+    {
+        if (left.HasValue)
+            return left.Equals(right);
+        return false;
+    }
+    public static bool operator !=(T left, Optional<T> right) { return !(left == right); }
+    public static bool operator !=(Optional<T> left, T right) { return !(left == right); }
+    public static bool operator !=(Optional<T> left, Optional<T> right) { return !(left == right); }
 
     public override int GetHashCode()
     {

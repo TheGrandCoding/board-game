@@ -30,6 +30,12 @@ public class TerritoryDisplayCriteria
     public Optional<int> MustHaveNoMoreThanArmies;
 
     /// <summary>
+    /// Territory must have a route to this field.
+    /// MustBeOwnedBy must also be specified
+    /// </summary>
+    public Optional<Territory> MoveableFromTerritory;
+
+    /// <summary>
     /// Default criteria that accepts ANY territory clicked
     /// </summary>
     public TerritoryDisplayCriteria()
@@ -40,9 +46,10 @@ public class TerritoryDisplayCriteria
         MustNOTBeOwnedBy = new Optional<Player>();
         MustHaveAtleastArmies = new Optional<int>();
         MustHaveNoMoreThanArmies = new Optional<int>();
+        MoveableFromTerritory = new Optional<Territory>();
     }
 
-    public TerritoryDisplayCriteria(Continent mustBeIn = null, Continent mustNotBeIn = null, Player ownedBy = null, Player notOwnedBy = null, int defendingArmiesAtleast = int.MinValue, int defendingArmiesAtMost = int.MaxValue)
+    public TerritoryDisplayCriteria(Continent mustBeIn = null, Continent mustNotBeIn = null, Player ownedBy = null, Player notOwnedBy = null, Territory mustBeMoveableFrom = null, int defendingArmiesAtleast = int.MinValue, int defendingArmiesAtMost = int.MaxValue)
     {
         MustBeInContinent = new Optional<Continent>(mustBeIn);
         MustNOTBeInContinent = new Optional<Continent>(mustNotBeIn);
@@ -50,7 +57,11 @@ public class TerritoryDisplayCriteria
         MustNOTBeOwnedBy = new Optional<Player>(notOwnedBy);
         MustHaveAtleastArmies = new Optional<int>(defendingArmiesAtleast);
         MustHaveNoMoreThanArmies = new Optional<int>(defendingArmiesAtMost);
+        MoveableFromTerritory = new Optional<Territory>(mustBeMoveableFrom);
 
+
+        if (MoveableFromTerritory.HasValue && !MustBeOwnedBy.HasValue)
+            throw new System.InvalidOperationException($"Cannot specific 'MoveableFromTerritory' but not specific 'MustBeOwnerBy'");
     }
 
     public bool DoesSatisfy(Territory territory)
@@ -75,15 +86,26 @@ public class TerritoryDisplayCriteria
             if (territory.Owner.Name == MustNOTBeOwnedBy.Value.Name)
                 return false;
         }
-        if(MustHaveAtleastArmies.HasValue)
+        if(MustHaveAtleastArmies.HasValue && MustHaveAtleastArmies.Value > 0)
         {
             if (territory.DefendingArmies.Count <= MustHaveAtleastArmies.Value)
                 return false;
         }
-        if(MustHaveNoMoreThanArmies.HasValue)
+        if(MustHaveNoMoreThanArmies.HasValue && MustHaveNoMoreThanArmies.Value > 0)
         {
             if (territory.DefendingArmies.Count > MustHaveNoMoreThanArmies.Value)
                 return false;
+        }
+        if(MoveableFromTerritory.HasValue)
+        {
+            var t = MoveableFromTerritory.Value;
+            if(Territory.AttemptOrFailToMove(MustBeOwnedBy.Value, t, territory))
+            {
+                // success
+            } else
+            { // unable to move there.
+                return false;
+            }
         }
         return true;
     }

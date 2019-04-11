@@ -22,6 +22,53 @@ public class GameManager : MonoBehaviour {
     public static Player NotOwned = new Player("Neutral");
 
     public static Player StartPlayer;
+    public static Player CurrentPlayer;
+    public static Player NextPlayer {  get
+        {
+            var curIndex = CurrentPlayer.ChoiceIndex + 1;
+            if(curIndex >= Players.Count)
+            {
+                // went round.
+                return Players[0];
+            }
+            return Players[curIndex];
+        } }
+    public static GameStage CurrentStage;
+    public static GameStage NextStage {  get
+        {
+            switch(CurrentStage)
+            {
+                case GameStage.First:
+                    return GameStage.Attack;
+                case GameStage.Attack:
+                    return GameStage.Movement;
+                default:
+                    return GameStage.First;
+            }
+        } }
+
+
+    public static void SwitchToNextPlayer()
+    {
+        CurrentStage = NextStage;
+        if(NextPlayer.ChoiceIndex == 0)
+        {
+            // a full 'turn' has taken place, so..
+            CurrentPlayer = NextPlayer;
+            StartNextTurn(); // we run logic to deal with new armies etc.
+        } else
+        {
+            CurrentPlayer = NextPlayer;
+            Debug.Log("Moving next turn, now: " + CurrentPlayer.Name);
+        }
+        UIScript.UpdateUI();
+    }
+
+    public static void StartNextTurn()
+    {
+        Debug.Log("Starting entire next turn.");
+        UIScript.UpdateUI();
+    }
 
     public class ReadyEventArgs : System.EventArgs
     {
@@ -84,7 +131,6 @@ public class GameManager : MonoBehaviour {
             new Territory("Central America", northAmerica),
             new Territory("Eastern US", northAmerica),
             new Territory("Greenland", northAmerica),
-            new Territory("Central America", northAmerica),
             new Territory("Northwest Territory", northAmerica),
             new Territory("Ontario", northAmerica),
             new Territory("Quebec", northAmerica),
@@ -176,7 +222,7 @@ public class GameManager : MonoBehaviour {
         NorthAmerica.AllMove(3, 9, 4);
         NorthAmerica.AllMove(4, 3, 9, 7, 8);
         NorthAmerica.AllMove(5, 6, 7, 8);
-        NorthAmerica.AllMove(6, 1, 2, 7, 5);
+        NorthAmerica.AllMove(6, 1, 2, 7);
         NorthAmerica.AllMove(7, 6, 2, 9, 4, 5);
         NorthAmerica.AllMove(8, 6, 7, 5, 4);
         NorthAmerica.AllMove(9, 2, 7, 4, 3);
@@ -324,6 +370,7 @@ public class GameManager : MonoBehaviour {
         }
 
         StartPlayer = highestPlayer;
+        CurrentStage = GameStage.First;
         int startIndex = Players.IndexOf(StartPlayer);
         int newIndexOfPlayers = 0;
         while (newIndexOfPlayers < Players.Count)
@@ -336,6 +383,7 @@ public class GameManager : MonoBehaviour {
                 startIndex = 0;
         }
         Players = Players.OrderBy(x => x.ChoiceIndex).ToList();
+        CurrentPlayer = StartPlayer;
         Debug.Log("Start player: " + highestPlayer.Name);
 
     }
@@ -357,8 +405,9 @@ public class GameManager : MonoBehaviour {
     {
         if (p.CapitalCity == null)
         {
+            Debug.Log(p.Name);
+            Debug.Log(capital.Name);
             Debug.Log("Setting capital of " + p.Name + " to " + capital.ToString());
-            p.CapitalCity = capital;
             capital.SetOwner(p);
         } else
         {
@@ -378,18 +427,21 @@ public class GameManager : MonoBehaviour {
         {
             foreach (var player in Players)
             {
+                if (remaining.Count == 0)
+                    continue;
                 var terr = remaining.First();
                 remaining.RemoveAt(0);
                 terr.SetOwner(player);
             }
             remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
         }
+        UIScript.UpdateUI();
     }
 
     private static void Start_SelectCapitals()
     {
         var p1 = Players[0];
-        UIHelper.RunOnTerritoryConfirmed(
+        UIHelper.SelectTerritory(
             new TerritoryDisplayCriteria(ownedBy:NotOwned),
             playerConfirmedTerritory, p1);
 
@@ -398,6 +450,8 @@ public class GameManager : MonoBehaviour {
     private static void playerConfirmedTerritory(Territory t, TerritoryDisplayCriteria c, object state)
     {
         var player = (Player)state;
+        Debug.Log(player.Name);
+        Debug.Log(t.Name);
         Start_SetCapital(player, t);
         var nextid = player.ChoiceIndex + 1;
         var nextPlayer = Players.ElementAtOrDefault(nextid);
@@ -407,7 +461,7 @@ public class GameManager : MonoBehaviour {
             Start_RandomiseRemainingTerritories();
         } else
         {
-            UIHelper.RunOnTerritoryConfirmed(
+            UIHelper.SelectTerritory(
                 new TerritoryDisplayCriteria(ownedBy: NotOwned),
                 playerConfirmedTerritory, nextPlayer);
         }
