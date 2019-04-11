@@ -44,6 +44,8 @@ public abstract class BaseUIPopup : MonoBehaviour
     {
         if (this.Criteria == null)
             return false;
+        if (IsDisplayed == false)
+            return false;
         if (this.Criteria.DoesSatisfy(t))
         {
             this.Display(t);

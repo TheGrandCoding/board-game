@@ -8,6 +8,11 @@ namespace RandomGens
     public static class RndHelp
     {
         public static System.Random random = new System.Random();
+        /// <summary>
+        /// Returns a pseudo-random number in the bounds: min ≤ x < max
+        /// </summary>
+        /// <param name="min">INCLUSIVE lower bound</param>
+        /// <param name="max">EXCLUSIVE upper bound</param>
         public static int Next(int min, int max)
         {
             return random.Next(min, max);
@@ -27,12 +32,12 @@ namespace RandomGens
             {
                 items.Add(item);
             }
-            int index = Next(0, items.Count - 1);
+            int index = Next(0, items.Count);
             return items[index];
         }
         public static T Choose<T>(IEnumerable<T> items)
         {
-            int index = Next(0, items.Count() - 1);
+            int index = Next(0, items.Count());
             return items.ElementAt(index);
         }
     }
@@ -67,7 +72,6 @@ namespace RandomGens
         /// <summary>
         /// Rolls a six sided dice that is weighted/unfair
         /// </summary>
-        /// <returns></returns>
         public static int RollWeightedFourSidedDice()
         {
             return RndHelp.Choose(1, 2, 3, 3, 4, 4);

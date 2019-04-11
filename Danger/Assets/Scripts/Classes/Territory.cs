@@ -198,7 +198,7 @@ public class Territory {
     static List<LinkedNode> visited = null;
     static List<List<Node>> Paths = new List<List<Node>>();
 
-    static bool CouldMoveArmyThroughPath(Player owner, Territory from, Territory to,  List<LinkedNode> path)
+    static bool CouldMoveArmyThroughPath(Player owner, Territory from, Territory to,  List<LinkedNode> path, bool invade)
     {
         for(int index =0; index < path.Count; index++)
         {
@@ -214,7 +214,7 @@ public class Territory {
                 throw new InvalidOperationException("Path ends before it reaches 'to' territory - path never connects to it");
             if (!t.Territory.WhereCanMove.Contains(next.Territory))
                 throw new InvalidOperationException($"Cannot move from {t} to {next} in path (no connection)");
-            if(t.Territory.Owner != next.Territory.Owner)
+            if(t.Territory.Owner != next.Territory.Owner && !invade)
                 throw new InvalidOperationException($"Cannot move from {t} to {next} in path (owners different)");
             if(t.Territory.Owner != owner)
                 throw new InvalidOperationException($"Cannot move from {t} to {next} in path (army owner different)");
@@ -222,7 +222,7 @@ public class Territory {
         return true;
     }
 
-    public static bool AttemptOrFailToMove(Player owner, Territory from, Territory to)
+    public static bool AttemptOrFailToMove(Player owner, Territory from, Territory to, bool invade = false)
     { // Function uses the https://en.wikipedia.org/wiki/Breadth-first_search algorithm to search
 
         if (from.TotalDefendingArmies == 1)
@@ -265,7 +265,7 @@ public class Territory {
                 {
                     try
                     {
-                        if(CouldMoveArmyThroughPath(owner, from, to, node.GetParents()))
+                        if(CouldMoveArmyThroughPath(owner, from, to, node.GetParents(), invade))
                         {
                             Debug.LogWarning("Done! With above.");
                             doneWith = node;
@@ -285,4 +285,63 @@ public class Territory {
         } while (visited.Count > lastVisitedCount && doneWith == null && limitDepth > depth && RAW_MAX_AMOUNTS < 20);
         return doneWith != null;
     }
+
+    List<Army> getArmiesForBattle(List<Army> totalArmiesPool)
+    {
+        List<Army> armies = new List<Army>();
+        while(armies.Count < totalArmiesPool.Count && armies.Count <= 3)
+        { // just randomly get three armies, or as many as possible
+            // in the future: could select the 'best' armies
+            armies.Add(RandomGens.RndHelp.Choose<Army>(totalArmiesPool));
+        }
+        return armies;
+    }
+
+    List<Army> DoBattle(List<Army> attackers)
+    {
+        var attackingRolls = attackers.Select(x => x.RollAttack());
+        var orderedAttacking = attackingRolls.OrderByDescending(x => x).ToList();
+
+        var defenders = getArmiesForBattle(this.DefendingArmies);
+        var defenceRolls = defenders.Select(x => x.RollDefence());
+        var orderedDefence = defenceRolls.OrderByDescending(x => x).ToList();
+
+        // NOTE: this does not care about which units actually did the roll
+        // so should probably be chagned (use a dict<int, Army>?)
+        while(defenders.Count > 0 && attackers.Count > 0 && orderedAttacking.Count() > 0 && orderedDefence.Count() > 0)
+        {
+            var attack = orderedAttacking.ElementAt(0);
+            var defence = orderedDefence.ElementAt(0);
+            Debug.Log($"Battle: {attack} vs {defence}");
+            if(attack > defence)
+            {
+                var lostDefender = defenders[0];
+                this.DefendingArmies.Remove(lostDefender);
+                defenders.Remove(lostDefender);
+            } else
+            { // less than OR EQUAL TO, favour defence
+                var lostAttacker = attackers[0];
+                attackers.Remove(lostAttacker);
+            }
+            orderedAttacking.RemoveAt(0);
+            orderedDefence.RemoveAt(0);
+        }
+        this.DefendingArmies = defenders;
+        Debug.Log($"Battle ends: {attackers.Count} vs {this.DefendingArmies.Count}");
+        updateInternal();
+        return attackers;
+    }
+
+    public List<Army> GetAttacked(List<Army> attackers)
+    {
+        while (this.TotalDefendingArmies > 0 && attackers.Count > 0)
+        {
+            attackers = getArmiesForBattle(attackers);
+            Debug.Log($"Battle starting, {this.TotalDefendingArmies} vs {attackers.Count}");
+            attackers = DoBattle(attackers);
+        }
+        Debug.Log($"Attack ends: {attackers.Count} vs {this.DefendingArmies.Count}");
+        return attackers;
+    }
+
 }

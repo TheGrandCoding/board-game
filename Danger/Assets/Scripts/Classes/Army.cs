@@ -14,13 +14,13 @@ public class Army {
         Type = type;
     }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	public int RollAttack()
+    {
+        return RandomGens.Dice.RollSixSided();
+    }
+
+    public int RollDefence()
+    {
+        return RandomGens.Dice.RollSixSided();
+    }
 }

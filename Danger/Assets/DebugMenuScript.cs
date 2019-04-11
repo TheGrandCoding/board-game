@@ -39,6 +39,7 @@ public class DebugMenuScript : MonoBehaviour
             p.IncreaseArmies();
         }
         Debug.Log(GameManager.StartPlayer.ArmiesToGive.Count);
+        UIScript.UpdateUI();
     }
 
     struct MoveStructure

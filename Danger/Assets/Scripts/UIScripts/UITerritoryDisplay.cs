@@ -15,6 +15,10 @@ public class UITerritoryDisplay : MonoBehaviour
     public TextMeshProUGUI Cavalery;
     public TextMeshProUGUI Artillery;
 
+    public Button PlaceButton;
+    public Button MoveOrAttackBtn;
+    public TextMeshProUGUI MoveAttackText;
+
     public Territory Territory;
 
     private RectTransform Transform;
@@ -42,7 +46,7 @@ public class UITerritoryDisplay : MonoBehaviour
              Debug.Log($"{details.InfAmount} & {details.CavAmount} & {details.ArtAmount} moving from {this.Territory.Name} ({from.Name})");
 
              // now we need to select where to move them.
-             UIHelper.SelectTerritory(new TerritoryDisplayCriteria(ownedBy: Territory.Owner, mustBeMoveableFrom:from), (Territory terr, TerritoryDisplayCriteria criter, object obj) =>
+             UIHelper.SelectTerritory(new TerritoryDisplayCriteria(mustBeMoveableFrom:from, allowInvade:GameManager.CurrentStage == GameStage.Attack), (Territory terr, TerritoryDisplayCriteria criter, object obj) =>
              {
                  // move things.
                  Debug.Log($"Moving to " + terr.Name);
@@ -61,6 +65,22 @@ public class UITerritoryDisplay : MonoBehaviour
                  {
                      var army = from.RemoveArmy(ArmyType.Artillery);
                      armiesToMove.Add(army);
+                 }
+                 Debug.Log($"Owners: {from.Owner} vs {terr.Owner}");
+                 if(terr.Owner != from.Owner)
+                 { // invading this
+                     Debug.Log("Invadion has begun");
+                     armiesToMove = terr.GetAttacked(armiesToMove);
+                     Debug.Log("Invasion concluded...");
+                     if(terr.TotalDefendingArmies == 0 && armiesToMove.Count > 0)
+                     {
+                         // successful invasion.
+                         terr.SetOwner(from.Owner);
+                         Debug.Log("Invasion was a success");
+                     } else
+                     {
+                         Debug.Log("Invasion failled.");
+                     }
                  }
                  foreach(var army in armiesToMove)
                  {
@@ -87,6 +107,15 @@ public class UITerritoryDisplay : MonoBehaviour
     }
 
     static bool LockedToTerritory = false;
+
+    bool shouldMoveBtnBeVisible()
+    {
+        if (GameManager.CurrentStage != GameStage.Attack && GameManager.CurrentStage != GameStage.Movement)
+            return false;
+        if ((Territory?.TotalDefendingArmies ?? 0) == 0)
+            return false;
+        return true;
+    }
 
     private void display(Territory t, bool preventOtherRemove = false)
     {
@@ -118,14 +147,19 @@ public class UITerritoryDisplay : MonoBehaviour
             Infantry.text = $"Infantry:  {Territory.NumInfantry}";
             Cavalery.text = $"Cavalery:  {Territory.NumCavalery}";
             Artillery.text = $"Artillery: {Territory.NumArtillery}";
-            
 
+            MoveAttackText.text = GameManager.CurrentStage == GameStage.Attack ? "Attack" : "Move";
+            PlaceButton.gameObject.SetActive(GameManager.CurrentStage == GameStage.Draft);
+            MoveOrAttackBtn.gameObject.SetActive(shouldMoveBtnBeVisible());
+
+            
             // Extra things that only make sense if the player can click on them.
             if(LockedToTerritory)
             { // Set their text
 
             }
         }
+        UIScript.UpdateUI(); // also update ui in case other things have changed
     }
 
     public static void DisplayOnClick(Territory t)

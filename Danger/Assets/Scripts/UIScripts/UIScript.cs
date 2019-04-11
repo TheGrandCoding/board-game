@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Threading;
 using System;
 using System.Threading.Tasks;
+using TMPro;
 
 public class UIScript : DangerGameObject
 {
@@ -13,16 +14,21 @@ public class UIScript : DangerGameObject
     {
         instance = this;
     }
-    // Main game UI
-    public Text PlayerName;
-    public Text UnitsRemain;
-    public Text TerritoriesNum;
-    public Button StartStage;
-    public Button AttackStage;
-    public Button RelocateStage;
-    public static bool Started;
 
-    static Player Current => GameManager.CurrentPlayer;
+    public GameObject StagePanel;
+    public GameObject PlayerInfoPanel;
+
+    public TextMeshProUGUI PlayerName;
+    public TextMeshProUGUI CurrentName;
+    public TextMeshProUGUI FreeArmies;
+
+    public TextMeshProUGUI CurrentStage;
+    public Button Stage1Button;
+    public Button Stage2Button;
+    public Button Stage3Button;
+
+
+
 
     private static void HighlightButton(Button obj, GameStage stage)
     {
@@ -38,12 +44,16 @@ public class UIScript : DangerGameObject
 
     public void MoveToStage(int stage)
     {
-        if((GameStage)stage == GameStage.First)
-        {
-            GameManager.SwitchToNextPlayer();
-        } else
-        {
+        int current = (int)GameManager.CurrentStage;
+        if(stage > current)
+        { // the stage is next 
             GameManager.CurrentStage = (GameStage)stage;
+        } else
+        { // stage is not next, they either clicked backwards or.. looped round
+            if(GameManager.CurrentStage == GameStage.Movement && ((GameStage)stage) == GameStage.Draft)
+            { // they looped round, so start next player.
+                GameManager.SwitchToNextPlayer();
+            }
         }
         UpdateUI();
     }
@@ -51,7 +61,7 @@ public class UIScript : DangerGameObject
     public void StartNextStage()
     {
         Debug.Log(GameManager.NextStage.ToString());
-        if(GameManager.NextStage == GameStage.First)
+        if(GameManager.NextStage == GameStage.Draft)
         {
             GameManager.SwitchToNextPlayer();
         }
@@ -59,21 +69,22 @@ public class UIScript : DangerGameObject
 
     public override void Startup()
     {
-        Started = true;
         UpdateUI();
     }
 
-    // Update is called once per frame
     public static void UpdateUI()
     {
-        if(Started)
-        {
-            instance.PlayerName.text = Current.Name;
-            instance.UnitsRemain.text = "Units: " + Current.ArmiesToGive.Count.ToString();
-            instance.TerritoriesNum.text = "Terr: " +  Current.Territories.Count.ToString();
-            HighlightButton(instance.StartStage, GameStage.First);
-            HighlightButton(instance.AttackStage, GameStage.Attack);
-            HighlightButton(instance.RelocateStage, GameStage.Movement);
-        }
+        instance.PlayerInfoPanel.SetActive(GameManager.CurrentStage != GameStage.NotStarted);
+        instance.StagePanel.SetActive(GameManager.CurrentStage != GameStage.NotStarted);
+        if (GameManager.CurrentStage == GameStage.NotStarted)
+            return;
+        instance.PlayerName.text = GameManager.CurrentPlayer.Name; // this would be different if multiplayer.
+        instance.PlayerName.color = GameManager.CurrentPlayer.PlayerColor;
+        instance.CurrentName.text = GameManager.CurrentPlayer.Name;
+        instance.FreeArmies.text = GameManager.CurrentPlayer.ArmiesToGive.Count.ToString();
+        instance.CurrentStage.text = GameManager.CurrentStage.ToString();
+        HighlightButton(instance.Stage1Button, GameStage.Draft);
+        HighlightButton(instance.Stage2Button, GameStage.Attack);
+        HighlightButton(instance.Stage3Button, GameStage.Movement);
     }
 }

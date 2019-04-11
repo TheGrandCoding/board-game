@@ -33,17 +33,17 @@ public class GameManager : MonoBehaviour {
             }
             return Players[curIndex];
         } }
-    public static GameStage CurrentStage;
+    public static GameStage CurrentStage = GameStage.NotStarted;
     public static GameStage NextStage {  get
         {
             switch(CurrentStage)
             {
-                case GameStage.First:
+                case GameStage.Draft:
                     return GameStage.Attack;
                 case GameStage.Attack:
                     return GameStage.Movement;
                 default:
-                    return GameStage.First;
+                    return GameStage.Draft;
             }
         } }
 
@@ -67,6 +67,10 @@ public class GameManager : MonoBehaviour {
     public static void StartNextTurn()
     {
         Debug.Log("Starting entire next turn.");
+        foreach(var p in Players)
+        { 
+            p.IncreaseArmies();
+        }
         UIScript.UpdateUI();
     }
 
@@ -119,6 +123,7 @@ public class GameManager : MonoBehaviour {
             Ready.Invoke(null, new ReadyEventArgs(startedSuccessfully));
         }
 
+        UIScript.UpdateUI();
         InitialStartGame();
     }
     private static void CreateContinents()
@@ -370,7 +375,6 @@ public class GameManager : MonoBehaviour {
         }
 
         StartPlayer = highestPlayer;
-        CurrentStage = GameStage.First;
         int startIndex = Players.IndexOf(StartPlayer);
         int newIndexOfPlayers = 0;
         while (newIndexOfPlayers < Players.Count)
@@ -435,6 +439,10 @@ public class GameManager : MonoBehaviour {
             }
             remaining = Territories.Where(x => x.Owner == null || x.Owner.Name == NotOwned.Name).ToList();
         }
+        CurrentStage = GameStage.Draft; // finally start the game.
+        // add in base units
+        foreach (var p in Players)
+            p.IncreaseArmies();
         UIScript.UpdateUI();
     }
 

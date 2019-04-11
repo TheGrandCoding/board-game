@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum GameStage
 {
-    First,
+    NotStarted,
+    Draft,
     Attack,
     Movement
 }

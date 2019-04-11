@@ -36,6 +36,11 @@ public class TerritoryDisplayCriteria
     public Optional<Territory> MoveableFromTerritory;
 
     /// <summary>
+    /// Allows incursion into enemy territory.
+    /// </summary>
+    public bool AllowInvasion;
+
+    /// <summary>
     /// Default criteria that accepts ANY territory clicked
     /// </summary>
     public TerritoryDisplayCriteria()
@@ -49,7 +54,7 @@ public class TerritoryDisplayCriteria
         MoveableFromTerritory = new Optional<Territory>();
     }
 
-    public TerritoryDisplayCriteria(Continent mustBeIn = null, Continent mustNotBeIn = null, Player ownedBy = null, Player notOwnedBy = null, Territory mustBeMoveableFrom = null, int defendingArmiesAtleast = int.MinValue, int defendingArmiesAtMost = int.MaxValue)
+    public TerritoryDisplayCriteria(Continent mustBeIn = null, Continent mustNotBeIn = null, Player ownedBy = null, Player notOwnedBy = null, Territory mustBeMoveableFrom = null, int defendingArmiesAtleast = int.MinValue, int defendingArmiesAtMost = int.MaxValue, bool allowInvade = false)
     {
         MustBeInContinent = new Optional<Continent>(mustBeIn);
         MustNOTBeInContinent = new Optional<Continent>(mustNotBeIn);
@@ -58,10 +63,7 @@ public class TerritoryDisplayCriteria
         MustHaveAtleastArmies = new Optional<int>(defendingArmiesAtleast);
         MustHaveNoMoreThanArmies = new Optional<int>(defendingArmiesAtMost);
         MoveableFromTerritory = new Optional<Territory>(mustBeMoveableFrom);
-
-
-        if (MoveableFromTerritory.HasValue && !MustBeOwnedBy.HasValue)
-            throw new System.InvalidOperationException($"Cannot specific 'MoveableFromTerritory' but not specific 'MustBeOwnerBy'");
+        AllowInvasion = allowInvade;
     }
 
     public bool DoesSatisfy(Territory territory)
@@ -99,7 +101,7 @@ public class TerritoryDisplayCriteria
         if(MoveableFromTerritory.HasValue)
         {
             var t = MoveableFromTerritory.Value;
-            if(Territory.AttemptOrFailToMove(MustBeOwnedBy.Value, t, territory))
+            if(Territory.AttemptOrFailToMove(t.Owner, t, territory, AllowInvasion))
             {
                 // success
             } else

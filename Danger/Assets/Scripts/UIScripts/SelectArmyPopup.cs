@@ -97,6 +97,9 @@ public class SelectArmyPopup : BaseUIPopup
         InfLabel.enabled = Context != null;
         CavLabel.enabled = Context != null;
         ArtLabel.enabled = Context != null;
+        InfAmount = 0;
+        CavAmount = 0;
+        ArtAmount = 0;
     }
 
     void Awake()

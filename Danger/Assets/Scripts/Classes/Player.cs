@@ -74,7 +74,7 @@ public class Player {
         {
             switch (ChoiceIndex) {
                 case 0:
-                    return Color.blue;
+                    return Color.green;
                 case 1:
                     return Color.red;
                 case 2:
@@ -84,7 +84,7 @@ public class Player {
                 case 4:
                     return Color.magenta;
                 case 5:
-                    return Color.green;
+                    return Color.blue;
                 default:
                     return Color.grey;
             }
